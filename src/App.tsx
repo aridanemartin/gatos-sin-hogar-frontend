@@ -6,6 +6,7 @@ import { DashboardPage } from "./pages/DashboardPage/DashboardPage";
 import { TaskEditPage } from "./pages/DashboardPage/TaskEditPage/TaskEditPage";
 import { NotFoundPage } from "./pages/NotFoundPage/NotFoundPage";
 import { HomePage } from "./pages/HomePage/HomePage";
+import "./styles/global.scss";
 
 function App() {
   return (

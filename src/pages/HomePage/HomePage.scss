@@ -1,0 +1,7 @@
+@use "@sass/fonts.scss" as *;
+@use "@sass/colors.scss" as *;
+
+p {
+  font-size: $font-size-title-desktop;
+  color: $corporative-gold;
+}
