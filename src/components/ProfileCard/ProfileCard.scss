@@ -1,10 +1,46 @@
-.card {
-  width: 152px;
-  height: 152px;
+body,
+h2 {
+  margin: 0;
+  padding: 0;
+}
 
-  &__image {
+.card-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 100vw;
+  height: 100vh;
+}
+
+.card {
+  position: relative;
+  height: 200px;
+  width: 200px;
+
+  &__title {
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
+    color: white;
+    display: flex;
   }
 
-  &__cat-name {
+  &__overlay {
+    background: -webkit-linear-gradient(
+      top,
+      transparent 52.13%,
+      rgba(0, 0, 0, 0.75) 90.75%
+    );
+    background: linear-gradient(
+      180deg,
+      transparent 52.13%,
+      rgba(0, 0, 0, 0.75) 90.75%
+    );
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
   }
 }

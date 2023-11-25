@@ -1,15 +1,24 @@
-import "./ProfileCard.scss";
+import './ProfileCard.scss';
 
-interface CardProps {
-  src: string;
-  catName: string;
+interface ProfileCardProps {
+  src?: string;
+  name: string;
 }
 
-export const Card = ({ src, catName }: CardProps) => {
+export const ProfileCard = ({
+  src = 'https://placekitten.com/200/200',
+  name
+}: ProfileCardProps) => {
   return (
     <div className="card">
-      <img className="card__image" src={src} alt={catName} />
-      <h3 className="card__cat-name">{catName}</h3>
+      <div className="card-container">
+        <div className="card">
+          <img src={src} />
+          <div className="card__overlay">
+            <h2 className="card__title">{name}</h2>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
