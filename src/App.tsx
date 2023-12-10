@@ -1,13 +1,13 @@
-import { Routes, Route } from "react-router-dom";
-import { VaccineEditPage } from "./pages/DashboardPage/VaccineEditPage/VaccineEditPage";
-import { VolunteerEditPage } from "./pages/DashboardPage/VolunteerEditPage/VolunteerEditPage";
-import { CatEditPage } from "./pages/DashboardPage/CatEditPage/CatEditPage";
-import { DashboardPage } from "./pages/DashboardPage/DashboardPage";
-import { TaskEditPage } from "./pages/DashboardPage/TaskEditPage/TaskEditPage";
-import { NotFoundPage } from "./pages/NotFoundPage/NotFoundPage";
-import { HomePage } from "./pages/HomePage/HomePage";
-import { AdoptPage } from "./pages/Adopt/Adopt";
-import "./styles/global.scss";
+import { Routes, Route } from 'react-router-dom';
+import { VaccineEditPage } from './pages/DashboardPage/VaccineEditPage/VaccineEditPage';
+import { VolunteerEditPage } from './pages/DashboardPage/VolunteerEditPage/VolunteerEditPage';
+import { CatEditPage } from './pages/DashboardPage/CatEditPage/CatEditPage';
+import { DashboardPage } from './pages/DashboardPage/DashboardPage';
+import { TaskEditPage } from './pages/DashboardPage/TaskEditPage/TaskEditPage';
+import { NotFoundPage } from './pages/NotFoundPage/NotFoundPage';
+import { HomePage } from './pages/HomePage/HomePage';
+import { AdoptPage } from './pages/Adopt/Adopt';
+import './styles/global.scss';
 
 function App() {
   return (
