@@ -22,7 +22,8 @@
 
     /* Paths */
     "paths": {
-      "@sass/*": ["./src/styles/sass/*"]
+      "@sass/*": ["./src/styles/sass/*"],
+      "@components/*": ["./src/components/*"]
     }
   },
   "include": ["src"],

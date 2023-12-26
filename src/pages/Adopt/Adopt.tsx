@@ -41,7 +41,6 @@ export const AdoptPage = () => {
 
   useEffect(() => {
     async function fetchCats() {
-      //   console.log('fetchCats');
       const response = await fetch(
         `http://localhost:7000/cats/?pageSize=${pagination.itemsPerPage}&page=${pagination.currentPage}`
       );

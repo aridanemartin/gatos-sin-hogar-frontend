@@ -1,16 +1,18 @@
 import { forwardRef, useState, ChangeEvent, Ref } from 'react';
 
-interface TextInputProps {
+type InputType = 'text' | 'textarea';
+
+interface TextAreaInputProps {
   name: string;
+  type: InputType;
   label: string;
   placeholder: string;
 }
 
-export const TextInput = forwardRef(function TextInput(
-  { name, label, placeholder }: TextInputProps,
+export const TextAreaInput = forwardRef(function TextInput(
+  { name, label, type, placeholder }: TextAreaInputProps,
   ref: Ref<HTMLInputElement>
 ) {
-  console.log('===> Se rerenderiza solo el textInput <===');
   const [error, setError] = useState(false);
   const [value, setValue] = useState('');
 
@@ -30,6 +32,7 @@ export const TextInput = forwardRef(function TextInput(
       <input
         name={name}
         onChange={handleChange}
+        type={type}
         ref={ref}
         placeholder={placeholder}
         value={value}

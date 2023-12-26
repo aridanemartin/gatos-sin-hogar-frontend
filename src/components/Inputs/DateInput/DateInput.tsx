@@ -9,7 +9,6 @@ export const DateInput = forwardRef(function DateInput(
   { name, label }: DateInputProps,
   ref: Ref<HTMLInputElement>
 ) {
-  console.log('===> Se rerenderiza solo el input <===');
   const [value, setValue] = useState('');
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
