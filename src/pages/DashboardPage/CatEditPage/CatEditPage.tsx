@@ -3,23 +3,41 @@ import { TextInput } from '@components/Inputs/TextInput/TextInput';
 import { SelectInput } from '@components/Inputs/SelectInput/SelectInput';
 import { DateInput } from '@components/Inputs/DateInput/DateInput';
 import { TextAreaInput } from '@components/Inputs/TextAreaInput/TextAreaInput';
+import { useParams } from 'react-router-dom';
+
+interface FormFields {
+  name: string | undefined;
+  description: string | undefined;
+  gender: string;
+  hasChip: boolean | undefined;
+  picture: string | undefined;
+  breedId: string | undefined;
+  birthDate: string | undefined;
+  spayedNeutered: boolean | undefined;
+  medicalConditions: string | undefined;
+  dietaryNeeds: string | undefined;
+  hasPassedAway: boolean;
+  locationId: string | undefined;
+  clinicId: string | undefined;
+}
 
 export const CatEditPage = () => {
-  const baseUrl = import.meta.env.VITE_BACKEND_BASE_URL;
-
-  const nameRef = useRef<HTMLInputElement>(null);
-  const descriptionRef = useRef<HTMLInputElement>(null);
-  const genderRef = useRef<HTMLSelectElement>(null);
-  const hasChipRef = useRef<HTMLSelectElement>(null);
-  const pictureRef = useRef<HTMLInputElement>(null);
-  const breedIdRef = useRef<HTMLSelectElement>(null);
-  const birthDateRef = useRef<HTMLInputElement>(null);
-  const spayedNeuteredRef = useRef<HTMLSelectElement>(null);
-  const medicalConditionsRef = useRef<HTMLTextAreaElement>(null);
-  const dietaryNeedsRef = useRef<HTMLTextAreaElement>(null);
-  const hasPassedAwayRef = useRef<HTMLSelectElement>(null);
-  const locationIdRef = useRef<HTMLInputElement>(null);
-  const clinicIdRef = useRef<HTMLInputElement>(null);
+  const { catId } = useParams();
+  const [catData, setCatData] = useState({
+    name: '',
+    description: '',
+    gender: 'UNKNOWN',
+    hasChip: false,
+    picture: '',
+    breedId: '',
+    birthDate: '',
+    spayedNeutered: false,
+    medicalConditions: '',
+    dietaryNeeds: '',
+    hasPassedAway: false,
+    locationId: '',
+    clinicId: ''
+  });
 
   const [errors, setErrors] = useState({
     name: false,
@@ -36,6 +54,7 @@ export const CatEditPage = () => {
     locationId: false,
     clinicId: false
   });
+
   const [formData, setFormData] = useState({
     genders: [],
     breeds: [],
@@ -44,6 +63,55 @@ export const CatEditPage = () => {
     vaccines: [],
     incidents: []
   });
+
+  console.log('===catData==>', catData);
+
+  const baseUrl = import.meta.env.VITE_BACKEND_BASE_URL;
+
+  const nameRef = useRef<HTMLInputElement>(null);
+  const descriptionRef = useRef<HTMLInputElement>(null);
+  const genderRef = useRef<HTMLSelectElement>(null);
+  const hasChipRef = useRef<HTMLSelectElement>(null);
+  const pictureRef = useRef<HTMLInputElement>(null);
+  const breedIdRef = useRef<HTMLSelectElement>(null);
+  const birthDateRef = useRef<HTMLInputElement>(null);
+  const spayedNeuteredRef = useRef<HTMLSelectElement>(null);
+  const medicalConditionsRef = useRef<HTMLTextAreaElement>(null);
+  const dietaryNeedsRef = useRef<HTMLTextAreaElement>(null);
+  const hasPassedAwayRef = useRef<HTMLSelectElement>(null);
+  const locationIdRef = useRef<HTMLInputElement>(null);
+  const clinicIdRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const fetchCatData = async () => {
+      try {
+        const res = await fetch(`${baseUrl}/cats/${catId}`);
+        const data = await res.json();
+
+        const updatedCatData = {
+          name: data?.name,
+          gender: data?.gender || 'UNKNOWN',
+          birthDate: data?.birth_date,
+          description: data?.description,
+          hasChip: data?.has_chip,
+          picture: data?.picture,
+          breedId: data?.breed_id,
+          spayedNeutered: data?.spayed_neutered,
+          medicalConditions: data?.medical_conditions,
+          dietaryNeeds: data?.dietary_needs,
+          hasPassedAway: data?.has_passed_away,
+          locationId: data?.location_id,
+          clinicId: data?.clinic_id
+        };
+
+        setCatData(updatedCatData);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    if (catId) fetchCatData();
+  }, [catId]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -73,7 +141,7 @@ export const CatEditPage = () => {
     fetchData();
   }, []);
 
-  const validateField = (field: string, value: any) => {
+  const validateField = (field: string, value: string) => {
     const isError =
       value === null ||
       value === undefined ||
@@ -81,10 +149,11 @@ export const CatEditPage = () => {
     setErrors((prevErrors) => ({ ...prevErrors, [field]: isError }));
     return isError;
   };
+
   const handleSubmit = async (event: ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const formFields = {
+    const formFields: FormFields = {
       name: nameRef?.current?.value,
       description: descriptionRef?.current?.value,
       gender: genderRef?.current?.value || 'UNKNOWN',
@@ -92,12 +161,12 @@ export const CatEditPage = () => {
       picture: pictureRef?.current?.value,
       breedId: breedIdRef?.current?.value,
       birthDate: birthDateRef?.current?.value,
-      spayedNeutered: spayedNeuteredRef?.current?.value,
+      spayedNeutered: Boolean(spayedNeuteredRef?.current?.value),
       medicalConditions: medicalConditionsRef?.current?.value,
       dietaryNeeds: dietaryNeedsRef?.current?.value,
       hasPassedAway: Boolean(hasPassedAwayRef?.current?.value),
-      locationId: locationIdRef?.current?.value || 3,
-      clinicId: clinicIdRef?.current?.value || 3
+      locationId: locationIdRef?.current?.value,
+      clinicId: clinicIdRef?.current?.value
     };
 
     const hasError = Object.keys(formFields).some((field) =>
@@ -108,8 +177,8 @@ export const CatEditPage = () => {
       console.log('Form submitted successfully');
 
       try {
-        await fetch(`${baseUrl}/cats`, {
-          method: 'POST',
+        await fetch(`${baseUrl}/cats/${catId ?? ''}`, {
+          method: catId ? 'PUT' : 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
@@ -121,7 +190,6 @@ export const CatEditPage = () => {
     }
   };
 
-  console.log('errores===>', errors);
   return (
     <form onSubmit={handleSubmit}>
       <TextInput
@@ -129,24 +197,30 @@ export const CatEditPage = () => {
         label="Nombre"
         ref={nameRef}
         placeholder="Nombre"
+        defaultValue={catData.name}
+        error={errors.name}
       />
       <TextInput
         name="description"
         label="Descripción"
         ref={descriptionRef}
         placeholder="Descripción"
+        defaultValue={catData.description}
+        error={errors.description}
       />
       <SelectInput
         name="gender"
         label="Género"
         options={formData.genders}
         ref={genderRef}
+        defaultValue={catData.gender}
       />
       <SelectInput
         name="chip"
         label="Chip"
         isBooleanSelect={true}
         ref={hasChipRef}
+        defaultValue={Boolean(catData.hasChip).toString()}
       />
       <SelectInput
         name="breed"
@@ -159,30 +233,38 @@ export const CatEditPage = () => {
         name="birth_date"
         label="Fecha de nacimiento"
         ref={birthDateRef}
+        defaultValue={catData.birthDate}
+        error={errors.birthDate}
       />
       <SelectInput
         name="spayed"
         label="Castrado/Esterilizado"
         isBooleanSelect={true}
         ref={spayedNeuteredRef}
+        defaultValue={Boolean(catData.spayedNeutered).toString()}
       />
       <TextAreaInput
         name="medical_conditions"
         label="Condiciones Médicas"
         placeholder="Condiciones Médicas"
         ref={medicalConditionsRef}
+        defaultValue={catData.medicalConditions}
+        error={errors.medicalConditions}
       />
       <TextAreaInput
         name="dietary_needs"
         label="Dieta Específica"
         placeholder="Dieta Específica"
         ref={dietaryNeedsRef}
+        defaultValue={catData.dietaryNeeds}
+        error={errors.dietaryNeeds}
       />
       <SelectInput
         name="passed"
         label="Ha Fallecido"
         isBooleanSelect={true}
         ref={hasPassedAwayRef}
+        defaultValue={Boolean(catData.hasPassedAway).toString()}
       />
 
       {/* TODO: This inputs are set temporary. Remember to change it for the real
@@ -192,18 +274,24 @@ export const CatEditPage = () => {
         label="Foto"
         ref={pictureRef}
         placeholder="Imagen del gato"
+        defaultValue={catData.picture}
+        error={errors.picture}
       />
       <TextInput
         name="location"
         label="Localización"
         ref={locationIdRef}
         placeholder="Ubicación"
+        defaultValue={catData?.locationId ?? ''}
+        error={errors.locationId}
       />
       <TextInput
         name="clinicId"
         label="Clínica Asignada"
         ref={clinicIdRef}
         placeholder="Clínica Asignada"
+        defaultValue={catData?.clinicId ?? ''}
+        error={errors.clinicId}
       />
       <input type="submit" />
     </form>

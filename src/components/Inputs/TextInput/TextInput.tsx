@@ -1,26 +1,31 @@
-import { forwardRef, useState, ChangeEvent, Ref } from 'react';
+import { forwardRef, useState, ChangeEvent, Ref, useEffect } from 'react';
 
 interface TextInputProps {
   name: string;
   label: string;
   placeholder: string;
+  defaultValue?: string;
+  error?: boolean;
 }
 
 export const TextInput = forwardRef(function TextInput(
-  { name, label, placeholder }: TextInputProps,
+  {
+    name,
+    label,
+    placeholder,
+    defaultValue = '',
+    error = false
+  }: TextInputProps,
   ref: Ref<HTMLInputElement>
 ) {
-  console.log('===> Se rerenderiza solo el textInput <===');
-  const [error, setError] = useState(false);
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState(defaultValue);
+
+  useEffect(() => {
+    setValue(defaultValue);
+  }, [defaultValue]);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
-    event.preventDefault();
-
-    const hasError = value === '';
-    if (hasError) setError(true);
-    else setError(false);
     setValue(value);
   };
 

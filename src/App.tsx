@@ -16,6 +16,7 @@ function App() {
       <Route path="dashboard">
         <Route index element={<DashboardPage />} />
         <Route path="gatos" element={<CatEditPage />} />
+        <Route path="gatos/:catId" element={<CatEditPage />} />
         <Route path="voluntarios" element={<VolunteerEditPage />} />
         <Route path="vacunas" element={<VaccineEditPage />} />
         <Route path="tareas" element={<TaskEditPage />} />

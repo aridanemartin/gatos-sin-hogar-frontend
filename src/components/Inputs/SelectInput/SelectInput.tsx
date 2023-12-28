@@ -1,4 +1,4 @@
-import { forwardRef, useState, Ref, ChangeEvent } from 'react';
+import { forwardRef, useState, Ref, ChangeEvent, useEffect } from 'react';
 
 interface SelectInputProps {
   name: string;
@@ -6,6 +6,7 @@ interface SelectInputProps {
   options?: SelectInputOption[];
   isBooleanSelect?: boolean;
   hasEnumeratedOptions?: boolean;
+  defaultValue?: string;
 }
 
 interface SelectInputOption {
@@ -19,11 +20,16 @@ export const SelectInput = forwardRef(function SelectInput(
     label,
     options = [],
     isBooleanSelect = false,
-    hasEnumeratedOptions = false
+    hasEnumeratedOptions = false,
+    defaultValue = ''
   }: SelectInputProps,
   ref: Ref<HTMLSelectElement>
 ) {
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState(defaultValue);
+
+  useEffect(() => {
+    setValue(defaultValue);
+  }, [defaultValue]);
 
   const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
     const { value } = event.target;

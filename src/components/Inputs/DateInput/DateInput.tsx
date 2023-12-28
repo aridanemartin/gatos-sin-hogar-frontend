@@ -1,15 +1,24 @@
-import { forwardRef, useState, Ref, ChangeEvent } from 'react';
+import { forwardRef, useState, Ref, ChangeEvent, useEffect } from 'react';
 
 interface DateInputProps {
   name: string;
   label: string;
+  defaultValue?: string;
+  error: boolean;
 }
 
 export const DateInput = forwardRef(function DateInput(
-  { name, label }: DateInputProps,
+  { name, label, defaultValue = '', error = false }: DateInputProps,
   ref: Ref<HTMLInputElement>
 ) {
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState(defaultValue);
+  const [maxDate, setMaxDate] = useState('');
+
+  useEffect(() => {
+    setValue(defaultValue.split('T')[0]);
+    const today = new Date().toISOString().split('T')[0];
+    setMaxDate(today);
+  }, [defaultValue]);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
@@ -26,7 +35,9 @@ export const DateInput = forwardRef(function DateInput(
         type="date"
         ref={ref}
         value={value}
+        max={maxDate}
       />
+      {error && <p>Inserte una fecha</p>}
     </>
   );
 });
