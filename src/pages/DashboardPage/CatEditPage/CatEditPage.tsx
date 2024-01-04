@@ -4,10 +4,14 @@ import { SelectInput } from '@components/Inputs/SelectInput/SelectInput';
 import { DateInput } from '@components/Inputs/DateInput/DateInput';
 import { TextAreaInput } from '@components/Inputs/TextAreaInput/TextAreaInput';
 import { useParams } from 'react-router-dom';
+import { Modal } from '@components/Modal/Modal';
+import { Map } from '@components/Map/Map';
+import { LocationsList } from '@components/LocationsList/LocationsList';
 
 interface FormFields {
   name: string | undefined;
   description: string | undefined;
+  personality: string | undefined;
   gender: string;
   hasChip: boolean | undefined;
   picture: string | undefined;
@@ -26,6 +30,7 @@ export const CatEditPage = () => {
   const [catData, setCatData] = useState({
     name: '',
     description: '',
+    personality: '',
     gender: 'UNKNOWN',
     hasChip: false,
     picture: '',
@@ -42,6 +47,7 @@ export const CatEditPage = () => {
   const [errors, setErrors] = useState({
     name: false,
     description: false,
+    personality: false,
     gender: false,
     hasChip: false,
     picture: false,
@@ -64,12 +70,13 @@ export const CatEditPage = () => {
     incidents: []
   });
 
-  console.log('===catData==>', catData);
+  // console.log('===catData==>', catData);
 
   const baseUrl = import.meta.env.VITE_BACKEND_BASE_URL;
 
   const nameRef = useRef<HTMLInputElement>(null);
   const descriptionRef = useRef<HTMLInputElement>(null);
+  const personalityRef = useRef<HTMLInputElement>(null);
   const genderRef = useRef<HTMLSelectElement>(null);
   const hasChipRef = useRef<HTMLSelectElement>(null);
   const pictureRef = useRef<HTMLInputElement>(null);
@@ -81,6 +88,8 @@ export const CatEditPage = () => {
   const hasPassedAwayRef = useRef<HTMLSelectElement>(null);
   const locationIdRef = useRef<HTMLInputElement>(null);
   const clinicIdRef = useRef<HTMLInputElement>(null);
+  const locationsModalRef = useRef<HTMLDialogElement>(null);
+  const mapRef = useRef(null);
 
   useEffect(() => {
     const fetchCatData = async () => {
@@ -93,6 +102,7 @@ export const CatEditPage = () => {
           gender: data?.gender || 'UNKNOWN',
           birthDate: data?.birth_date,
           description: data?.description,
+          personality: data?.personality,
           hasChip: data?.has_chip,
           picture: data?.picture,
           breedId: data?.breed_id,
@@ -156,6 +166,7 @@ export const CatEditPage = () => {
     const formFields: FormFields = {
       name: nameRef?.current?.value,
       description: descriptionRef?.current?.value,
+      personality: personalityRef?.current?.value,
       gender: genderRef?.current?.value || 'UNKNOWN',
       hasChip: Boolean(hasChipRef?.current?.value),
       picture: pictureRef?.current?.value,
@@ -207,6 +218,14 @@ export const CatEditPage = () => {
         placeholder="Descripción"
         defaultValue={catData.description}
         error={errors.description}
+      />
+      <TextInput
+        name="personality"
+        label="Personalidad"
+        ref={personalityRef}
+        placeholder="Personalidad"
+        defaultValue={catData.personality}
+        error={errors.personality}
       />
       <SelectInput
         name="gender"
@@ -293,6 +312,21 @@ export const CatEditPage = () => {
         defaultValue={catData?.clinicId ?? ''}
         error={errors.clinicId}
       />
+      <Modal ref={locationsModalRef} width="400px" height="400px">
+        <>
+          {/*Las Canteras: [28.134747, -15.441128]*/}
+          <Map position={mapRef?.current?.position ?? [1, 1]} ref={mapRef} />
+          <LocationsList
+            data={formData.locations}
+            // selected={formData.locations[0]}
+            mapRef={mapRef}
+          />
+          {/* ===> catData.locationId */}
+        </>
+      </Modal>
+      <button onClick={() => locationsModalRef?.current?.showModal()}>
+        Abrir Mapa
+      </button>
       <input type="submit" />
     </form>
   );
