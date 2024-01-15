@@ -312,21 +312,29 @@ export const CatEditPage = () => {
         defaultValue={catData?.clinicId ?? ''}
         error={errors.clinicId}
       />
-      <Modal ref={locationsModalRef} width="400px" height="400px">
-        <>
-          {/*Las Canteras: [28.134747, -15.441128]*/}
-          <Map position={mapRef?.current?.position ?? [1, 1]} ref={mapRef} />
-          <LocationsList
-            data={formData.locations}
-            // selected={formData.locations[0]}
-            mapRef={mapRef}
-          />
-          {/* ===> catData.locationId */}
-        </>
-      </Modal>
-      <button onClick={() => locationsModalRef?.current?.showModal()}>
-        Abrir Mapa
-      </button>
+      {modalOpen && (
+        <Modal
+          ref={locationsModalRef}
+          width="400px"
+          height="400px"
+          closeModal={closeModal}
+        >
+          <>
+            {/*Las Canteras: [28.134747, -15.441128]*/}
+            <Map
+              position={mapRef?.current?.position ?? defaultLocation}
+              ref={mapRef}
+            />
+            <LocationsList
+              data={formData.locations}
+              // selected={formData.locations[0]}
+              mapRef={mapRef}
+            />
+            {/* ===> catData.locationId */}
+          </>
+        </Modal>
+      )}
+      <button onClick={openModal}>Abrir Mapa</button>
       <input type="submit" />
     </form>
   );

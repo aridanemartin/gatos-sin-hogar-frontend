@@ -4,20 +4,28 @@ interface ModalProps {
   children: JSX.Element;
   width: string;
   height: string;
+  closeModal: () => void;
 }
 
 export const Modal = forwardRef(function Modal(
-  { children, width, height }: ModalProps,
-  ref: Ref<HTMLDialogElement>
+  { children, width, height, closeModal }: ModalProps,
+  ref: Ref<HTMLDivElement>
 ) {
-  const handleClick = () => {
-    if (ref && 'current' in ref && ref.current) ref.current.close();
-  };
-
   return (
-    <dialog ref={ref} style={{ width, height }}>
+    <div
+      ref={ref}
+      style={{
+        width,
+        height,
+        border: '1px solid black',
+        padding: '10px',
+        position: 'fixed',
+        left: '50%',
+        right: '-50%'
+      }}
+    >
       {children}
-      <button onClick={handleClick}>Close</button>
-    </dialog>
+      <button onClick={closeModal}>Close</button>
+    </div>
   );
 });
