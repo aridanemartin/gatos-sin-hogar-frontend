@@ -23,7 +23,10 @@
     /* Paths */
     "paths": {
       "@sass/*": ["./src/styles/sass/*"],
-      "@components/*": ["./src/components/*"]
+      "@components/*": ["./src/components/*"],
+      "@hooks/*": ["./src/hooks/*"],
+      "@helpers/*": ["./src/helpers/*"],
+      "@interfaces/*": ["./src/interfaces/*"]
     }
   },
   "include": ["src"],

@@ -7,23 +7,9 @@ import { useParams } from 'react-router-dom';
 import { Modal } from '@components/Modal/Modal';
 import { Map } from '@components/Map/Map';
 import { LocationsList } from '@components/LocationsList/LocationsList';
-
-interface FormFields {
-  name: string | undefined;
-  description: string | undefined;
-  personality: string | undefined;
-  gender: string;
-  hasChip: boolean | undefined;
-  picture: string | undefined;
-  breedId: string | undefined;
-  birthDate: string | undefined;
-  spayedNeutered: boolean | undefined;
-  medicalConditions: string | undefined;
-  dietaryNeeds: string | undefined;
-  hasPassedAway: boolean;
-  locationId: string | undefined;
-  clinicId: string | undefined;
-}
+import { UseDefaultCatLocation } from '@hooks/UseDefaultCatLocation';
+import { UseFormSetupData } from '@hooks/UseFormSetupData';
+import { CatFormFields, GenderType } from '@interfaces/CatForm';
 
 export const CatEditPage = () => {
   const { catId } = useParams();
@@ -61,17 +47,6 @@ export const CatEditPage = () => {
     clinicId: false
   });
 
-  const [formData, setFormData] = useState({
-    genders: [],
-    breeds: [],
-    locations: [],
-    clinics: [],
-    vaccines: [],
-    incidents: []
-  });
-
-  // console.log('===catData==>', catData);
-
   const baseUrl = import.meta.env.VITE_BACKEND_BASE_URL;
 
   const nameRef = useRef<HTMLInputElement>(null);
@@ -88,8 +63,17 @@ export const CatEditPage = () => {
   const hasPassedAwayRef = useRef<HTMLSelectElement>(null);
   const locationIdRef = useRef<HTMLInputElement>(null);
   const clinicIdRef = useRef<HTMLInputElement>(null);
-  const locationsModalRef = useRef<HTMLDialogElement>(null);
+  const locationsModalRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef(null);
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const openModal = () => {
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+  };
 
   useEffect(() => {
     const fetchCatData = async () => {
@@ -100,18 +84,18 @@ export const CatEditPage = () => {
         const updatedCatData = {
           name: data?.name,
           gender: data?.gender || 'UNKNOWN',
-          birthDate: data?.birth_date,
-          description: data?.description,
-          personality: data?.personality,
-          hasChip: data?.has_chip,
-          picture: data?.picture,
-          breedId: data?.breed_id,
-          spayedNeutered: data?.spayed_neutered,
-          medicalConditions: data?.medical_conditions,
-          dietaryNeeds: data?.dietary_needs,
+          birthDate: data?.birth_date || '',
+          description: data?.description || '',
+          personality: data?.personality || '',
+          hasChip: data?.has_chip || '',
+          picture: data?.picture || '',
+          breedId: data?.breed_id || '',
+          spayedNeutered: data?.spayed_neutered || '',
+          medicalConditions: data?.medical_conditions || '',
+          dietaryNeeds: data?.dietary_needs || '',
           hasPassedAway: data?.has_passed_away,
-          locationId: data?.location_id,
-          clinicId: data?.clinic_id
+          locationId: data?.location_id || '',
+          clinicId: data?.clinic_id || ''
         };
 
         setCatData(updatedCatData);
@@ -123,33 +107,12 @@ export const CatEditPage = () => {
     if (catId) fetchCatData();
   }, [catId]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [genders, breeds, locations, clinics, vaccines, incidents] =
-          await Promise.all([
-            fetch(`${baseUrl}/genders`).then((res) => res.json()),
-            fetch(`${baseUrl}/breeds`).then((res) => res.json()),
-            fetch(`${baseUrl}/locations`).then((res) => res.json()),
-            fetch(`${baseUrl}/clinics`).then((res) => res.json()),
-            fetch(`${baseUrl}/vaccines`).then((res) => res.json()),
-            fetch(`${baseUrl}/incidents`).then((res) => res.json())
-          ]);
-        setFormData({
-          genders,
-          breeds,
-          locations,
-          clinics,
-          vaccines,
-          incidents
-        });
-      } catch (error) {
-        console.log('error!');
-      }
-    };
-
-    fetchData();
-  }, []);
+  const formData = UseFormSetupData();
+  const defaultLocation = UseDefaultCatLocation(
+    Number(catId),
+    Number(catData.locationId),
+    formData.locations
+  );
 
   const validateField = (field: string, value: string) => {
     const isError =
@@ -163,11 +126,11 @@ export const CatEditPage = () => {
   const handleSubmit = async (event: ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const formFields: FormFields = {
+    const formFields: CatFormFields = {
       name: nameRef?.current?.value,
       description: descriptionRef?.current?.value,
       personality: personalityRef?.current?.value,
-      gender: genderRef?.current?.value || 'UNKNOWN',
+      gender: (genderRef?.current?.value as GenderType) || 'UNKNOWN',
       hasChip: Boolean(hasChipRef?.current?.value),
       picture: pictureRef?.current?.value,
       breedId: breedIdRef?.current?.value,
