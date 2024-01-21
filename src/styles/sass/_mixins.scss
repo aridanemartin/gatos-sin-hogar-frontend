@@ -1,0 +1,27 @@
+@mixin formInputStyles {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+
+  label {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  input,
+  select,
+  textarea {
+    border: 1px solid gray;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    font-weight: 400;
+    margin-bottom: 1rem;
+    width: 100%;
+
+    &:focus {
+      outline: none;
+      border: 1px solid gray;
+    }
+  }
+}

@@ -1,0 +1,5 @@
+@use '@sass' as *;
+
+.selectInput {
+  @include formInputStyles;
+}

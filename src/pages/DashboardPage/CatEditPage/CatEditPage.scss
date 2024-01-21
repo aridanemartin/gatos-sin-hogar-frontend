@@ -1,0 +1,58 @@
+.catPage {
+  &__form {
+    display: grid;
+    grid-template-areas: 'header header header' 'image info location' 'about about about' 'health health incident';
+    grid-template-columns: 293px 1fr 1fr;
+    grid-template-rows: 1fr 293px 1fr 1fr;
+
+    h2 {
+      position: inline-block;
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+  }
+
+  &__header {
+    grid-area: header;
+    height: 100px;
+  }
+
+  &__imageSection {
+    grid-area: image;
+
+    background-color: #f5f5f5;
+  }
+
+  &__generalInformation {
+    &Section {
+      grid-area: info;
+      padding: 0 1rem;
+    }
+
+    &Inputs {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+
+      .selectInput,
+      .dateInput {
+        height: fit-content;
+        width: 50%;
+        margin-bottom: 17px;
+      }
+    }
+  }
+
+  &__locationSection {
+    grid-area: location;
+  }
+
+  &__aboutSection {
+    grid-area: about;
+  }
+
+  &__healthRecordsSection {
+    grid-area: health;
+  }
+}

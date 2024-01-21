@@ -1,4 +1,5 @@
 import { forwardRef, useState, Ref, ChangeEvent, useEffect } from 'react';
+import './SelectInput.scss';
 
 interface SelectInputProps {
   name: string;
@@ -26,6 +27,7 @@ export const SelectInput = forwardRef(function SelectInput(
   ref: Ref<HTMLSelectElement>
 ) {
   const [value, setValue] = useState(defaultValue);
+  console.log('===defaultvalue==>', label, defaultValue);
 
   useEffect(() => {
     setValue(defaultValue);
@@ -64,11 +66,11 @@ export const SelectInput = forwardRef(function SelectInput(
   };
 
   return (
-    <>
+    <div className="selectInput">
       <label htmlFor={name}>{label}</label>
       <select name={name} onChange={handleChange} ref={ref} value={value}>
         {renderOptions()}
       </select>
-    </>
+    </div>
   );
 });

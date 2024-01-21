@@ -1,36 +1,22 @@
-import { useRef, useState, useContext, useEffect, ChangeEvent } from 'react';
+import { useRef, useState, useEffect, ChangeEvent, useContext } from 'react';
 import { TextInput } from '@components/Inputs/TextInput/TextInput';
 import { SelectInput } from '@components/Inputs/SelectInput/SelectInput';
 import { DateInput } from '@components/Inputs/DateInput/DateInput';
 import { TextAreaInput } from '@components/Inputs/TextAreaInput/TextAreaInput';
 import { useParams } from 'react-router-dom';
-import { Modal } from '@components/Modal/Modal';
-import { Map } from '@components/Map/Map';
-import { LocationsList } from '@components/LocationsList/LocationsList';
-import { UseDefaultCatLocation } from '@hooks/UseDefaultCatLocation';
 import { UseFormSetupData } from '@hooks/UseFormSetupData';
 import { CatFormFields, GenderType } from '@interfaces/CatForm';
-import { LatLngExpression } from 'leaflet';
 import { MapModal } from '@components/MapModal/MapModal';
+import { CatEditFormContext } from '@contexts/CatFormContext';
+import './CatEditPage.scss';
+
+const baseUrl = import.meta.env.VITE_BACKEND_BASE_URL;
 
 export const CatEditPage = () => {
+  const { formValues, setFormValues } = useContext(CatEditFormContext);
   const { catId } = useParams();
-  const [catData, setCatData] = useState({
-    name: '',
-    description: '',
-    personality: '',
-    gender: 'UNKNOWN',
-    hasChip: false,
-    picture: '',
-    breedId: '',
-    birthDate: '',
-    spayedNeutered: false,
-    medicalConditions: '',
-    dietaryNeeds: '',
-    hasPassedAway: false,
-    locationId: '',
-    clinicId: ''
-  });
+
+  console.log('===formValues==>', formValues);
 
   const [errors, setErrors] = useState({
     name: false,
@@ -48,8 +34,6 @@ export const CatEditPage = () => {
     locationId: false,
     clinicId: false
   });
-
-  const baseUrl = import.meta.env.VITE_BACKEND_BASE_URL;
 
   const nameRef = useRef<HTMLInputElement>(null);
   const descriptionRef = useRef<HTMLInputElement>(null);
@@ -98,7 +82,7 @@ export const CatEditPage = () => {
           clinicId: data?.clinic_id || ''
         };
 
-        setCatData(updatedCatData);
+        setFormValues(updatedCatData);
       } catch (error) {
         console.log(error);
       }
@@ -160,125 +144,147 @@ export const CatEditPage = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <TextInput
-        name="name"
-        label="Nombre"
-        ref={nameRef}
-        placeholder="Nombre"
-        defaultValue={catData.name}
-        error={errors.name}
-      />
-      <TextInput
-        name="description"
-        label="Descripción"
-        ref={descriptionRef}
-        placeholder="Descripción"
-        defaultValue={catData.description}
-        error={errors.description}
-      />
-      <TextInput
-        name="personality"
-        label="Personalidad"
-        ref={personalityRef}
-        placeholder="Personalidad"
-        defaultValue={catData.personality}
-        error={errors.personality}
-      />
-      <SelectInput
-        name="gender"
-        label="Género"
-        options={formData.genders}
-        ref={genderRef}
-        defaultValue={catData.gender}
-      />
-      <SelectInput
-        name="chip"
-        label="Chip"
-        isBooleanSelect={true}
-        ref={hasChipRef}
-        defaultValue={Boolean(catData.hasChip).toString()}
-      />
-      <SelectInput
-        name="breed"
-        label="Raza"
-        hasEnumeratedOptions={true}
-        options={formData.breeds}
-        ref={breedIdRef}
-      />
-      <DateInput
-        name="birth_date"
-        label="Fecha de nacimiento"
-        ref={birthDateRef}
-        defaultValue={catData.birthDate}
-        error={errors.birthDate}
-      />
-      <SelectInput
-        name="spayed"
-        label="Castrado/Esterilizado"
-        isBooleanSelect={true}
-        ref={spayedNeuteredRef}
-        defaultValue={Boolean(catData.spayedNeutered).toString()}
-      />
+    <form onSubmit={handleSubmit} className="catPage__form">
+      <section className="catPage__header">
+        <TextInput
+          name="name"
+          label="Nombre"
+          ref={nameRef}
+          placeholder="Nombre"
+          defaultValue={formValues.name}
+          error={errors.name}
+        />
+      </section>
+
+      <section className="catPage__generalInformationSection">
+        <h2>Información General</h2>
+        <div className="catPage__generalInformationInputs">
+          <SelectInput
+            name="gender"
+            label="Género"
+            options={formData.genders}
+            ref={genderRef}
+            defaultValue={formValues.gender as unknown as string}
+          />
+          <SelectInput
+            name="chip"
+            label="Chip"
+            isBooleanSelect={true}
+            ref={hasChipRef}
+            defaultValue={Boolean(formValues.hasChip).toString()}
+          />
+          <SelectInput
+            name="breed"
+            label="Raza"
+            hasEnumeratedOptions={true}
+            options={formData.breeds}
+            ref={breedIdRef}
+          />
+          <DateInput
+            name="birth_date"
+            label="Fecha de nacimiento"
+            ref={birthDateRef}
+            defaultValue={formValues.birthDate}
+            error={errors.birthDate}
+          />
+          <SelectInput
+            name="spayed"
+            label="Castrado/Esterilizado"
+            isBooleanSelect={true}
+            ref={spayedNeuteredRef}
+            defaultValue={Boolean(formValues.spayedNeutered).toString()}
+          />
+          <SelectInput
+            name="passed"
+            label="Ha Fallecido"
+            isBooleanSelect={true}
+            ref={hasPassedAwayRef}
+            defaultValue={Boolean(formValues.hasPassedAway).toString()}
+          />
+        </div>
+      </section>
+      <section className="catPage__aboutSection">
+        <h2>
+          {formValues?.name
+            ? `Sobre ${formValues.name}:`
+            : 'Sobre el/la gato/a:'}
+        </h2>
+        <TextInput
+          name="description"
+          label="Descripción"
+          ref={descriptionRef}
+          placeholder="Descripción"
+          defaultValue={formValues.description}
+          error={errors.description}
+        />
+        <TextInput
+          name="personality"
+          label="Personalidad"
+          ref={personalityRef}
+          placeholder="Personalidad"
+          defaultValue={formValues.personality}
+          error={errors.personality}
+        />
+      </section>
       <TextAreaInput
         name="medical_conditions"
         label="Condiciones Médicas"
         placeholder="Condiciones Médicas"
         ref={medicalConditionsRef}
-        defaultValue={catData.medicalConditions}
+        defaultValue={formValues.medicalConditions}
         error={errors.medicalConditions}
       />
-      <TextAreaInput
-        name="dietary_needs"
-        label="Dieta Específica"
-        placeholder="Dieta Específica"
-        ref={dietaryNeedsRef}
-        defaultValue={catData.dietaryNeeds}
-        error={errors.dietaryNeeds}
-      />
-      <SelectInput
-        name="passed"
-        label="Ha Fallecido"
-        isBooleanSelect={true}
-        ref={hasPassedAwayRef}
-        defaultValue={Boolean(catData.hasPassedAway).toString()}
-      />
-
-      {/* TODO: This inputs are set temporary. Remember to change it for the real
-        locationId, clinicId and picture */}
-      <TextInput
-        name="picture"
-        label="Foto"
-        ref={pictureRef}
-        placeholder="Imagen del gato"
-        defaultValue={catData.picture}
-        error={errors.picture}
-      />
-      <TextInput
-        name="location"
-        label="Localización"
-        ref={locationIdRef}
-        placeholder="Ubicación"
-        defaultValue={catData?.locationId ?? ''}
-        error={errors.locationId}
-      />
-      <TextInput
-        name="clinicId"
-        label="Clínica Asignada"
-        ref={clinicIdRef}
-        placeholder="Clínica Asignada"
-        defaultValue={catData?.clinicId ?? ''}
-        error={errors.clinicId}
-      />
-      {modalOpen && (
-        <MapModal
-          catId={catId}
-          catLocationId={catData.locationId}
-          locations={formData.locations}
-          closeModal={closeMapModal}
+      <section className="catPage__healthRecordsSection">
+        <h2>Historial Médico:</h2>
+        <TextAreaInput
+          name="dietary_needs"
+          label="Dieta Específica"
+          placeholder="Dieta Específica"
+          ref={dietaryNeedsRef}
+          defaultValue={formValues.dietaryNeeds}
+          error={errors.dietaryNeeds}
         />
-      )}
-      <button onClick={openMapModal}>Abrir Mapa</button>
+        {/* TODO: This inputs are set temporary. Remember to change it for the real
+          locationId, clinicId and picture */}
+      </section>
+      <section className="catPage__imageSection">
+        <TextInput
+          name="picture"
+          label="Foto"
+          ref={pictureRef}
+          placeholder="Imagen del gato"
+          defaultValue={formValues.picture}
+          error={errors.picture}
+        />
+      </section>
+      <section className="catPage__locationSection">
+        <h2>Localización:</h2>
+        <TextInput
+          name="location"
+          label="Localización"
+          ref={locationIdRef}
+          placeholder="Ubicación"
+          defaultValue={formValues?.locationId ?? ''}
+          error={errors.locationId}
+        />
+        <TextInput
+          name="clinicId"
+          label="Clínica Asignada"
+          ref={clinicIdRef}
+          placeholder="Clínica Asignada"
+          defaultValue={formValues?.clinicId ?? ''}
+          error={errors.clinicId}
+        />
+        {modalOpen && (
+          <MapModal
+            catId={catId}
+            catLocationId={formValues.locationId}
+            locations={formData.locations}
+            closeModal={closeMapModal}
+          />
+        )}
+        <button onClick={openMapModal}>Abrir Mapa</button>
+      </section>
       <input type="submit" />
     </form>
   );

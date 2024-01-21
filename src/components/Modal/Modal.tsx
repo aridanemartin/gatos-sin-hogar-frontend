@@ -2,30 +2,22 @@ import { forwardRef, Ref } from 'react';
 
 interface ModalProps {
   children: JSX.Element;
-  width: string;
-  height: string;
+
+  className?: string;
   closeModal: () => void;
 }
 
 export const Modal = forwardRef(function Modal(
-  { children, width, height, closeModal }: ModalProps,
+  { children, closeModal, className }: ModalProps,
   ref: Ref<HTMLDivElement>
 ) {
   return (
-    <div
-      ref={ref}
-      style={{
-        width,
-        height,
-        border: '1px solid black',
-        padding: '10px',
-        position: 'fixed',
-        left: '50%',
-        right: '-50%'
-      }}
-    >
-      {children}
-      <button onClick={closeModal}>Close</button>
-    </div>
+    <>
+      <div className={`${className}__background`} onClick={closeModal}></div>
+      <div className={className} ref={ref}>
+        {children}
+        <button onClick={closeModal}>Close</button>
+      </div>
+    </>
   );
 });

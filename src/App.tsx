@@ -8,6 +8,7 @@ import { NotFoundPage } from './pages/NotFoundPage/NotFoundPage';
 import { HomePage } from './pages/HomePage/HomePage';
 import { AdoptPage } from './pages/Adopt/Adopt';
 import './styles/global.scss';
+import { CatEditFormContextProvider } from '@contexts/CatFormContext';
 
 function App() {
   return (
@@ -15,8 +16,24 @@ function App() {
       <Route index element={<HomePage />} />
       <Route path="dashboard">
         <Route index element={<DashboardPage />} />
-        <Route path="gatos" element={<CatEditPage />} />
-        <Route path="gatos/:catId" element={<CatEditPage />} />
+
+        <Route
+          path="gatos"
+          element={
+            <CatEditFormContextProvider>
+              <CatEditPage />
+            </CatEditFormContextProvider>
+          }
+        />
+        <Route
+          path="gatos/:catId"
+          element={
+            <CatEditFormContextProvider>
+              <CatEditPage />
+            </CatEditFormContextProvider>
+          }
+        />
+
         <Route path="voluntarios" element={<VolunteerEditPage />} />
         <Route path="vacunas" element={<VaccineEditPage />} />
         <Route path="tareas" element={<TaskEditPage />} />

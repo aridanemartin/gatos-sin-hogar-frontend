@@ -6,6 +6,7 @@ import { LatLngExpression } from 'leaflet';
 import { useState } from 'react';
 import { CatLocation } from '@interfaces/CatForm';
 import { UseDefaultCatLocation } from '@hooks/UseDefaultCatLocation';
+import './MapModal.scss';
 
 interface MapModalProps {
   catId: string | undefined;
@@ -42,12 +43,7 @@ export const MapModal = ({
   }, [defaultLocation]);
 
   return (
-    <Modal
-      ref={locationsModalRef}
-      width="400px"
-      height="400px"
-      closeModal={closeModal}
-    >
+    <Modal className="mapModal" ref={locationsModalRef} closeModal={closeModal}>
       <>
         <Map
           mapPosition={mapPosition}

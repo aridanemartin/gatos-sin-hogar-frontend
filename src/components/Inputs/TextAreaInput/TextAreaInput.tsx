@@ -1,4 +1,5 @@
 import { forwardRef, Ref, ChangeEvent, useState, useEffect } from 'react';
+import './TextAreaInput.scss';
 
 interface TextAreaInputProps {
   name: string;
@@ -24,7 +25,7 @@ export const TextAreaInput = forwardRef(function TextAreaInput(
   };
 
   return (
-    <>
+    <div className="textAreaInput">
       <label htmlFor={name}>{label}</label>
       <textarea
         name={name}
@@ -34,6 +35,6 @@ export const TextAreaInput = forwardRef(function TextAreaInput(
         onChange={handleChange}
       />
       {error && <p>El input está vacío</p>}
-    </>
+    </div>
   );
 });

@@ -1,0 +1,5 @@
+@use '@sass' as *;
+
+.textArea {
+  @include formInputStyles;
+}

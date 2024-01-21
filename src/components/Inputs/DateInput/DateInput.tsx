@@ -1,4 +1,5 @@
 import { forwardRef, useState, Ref, ChangeEvent, useEffect } from 'react';
+import './DateInput.scss';
 
 interface DateInputProps {
   name: string;
@@ -27,7 +28,7 @@ export const DateInput = forwardRef(function DateInput(
   };
 
   return (
-    <>
+    <div className="dateInput">
       <label htmlFor={name}>{label}</label>
       <input
         name={name}
@@ -38,6 +39,6 @@ export const DateInput = forwardRef(function DateInput(
         max={maxDate}
       />
       {error && <p>Inserte una fecha</p>}
-    </>
+    </div>
   );
 });
