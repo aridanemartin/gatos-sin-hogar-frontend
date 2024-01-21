@@ -25,6 +25,10 @@ export default defineConfig({
       {
         find: '@interfaces',
         replacement: path.resolve(__dirname, 'src/interfaces/')
+      },
+      {
+        find: '@contexts',
+        replacement: path.resolve(__dirname, 'src/contexts')
       }
     ]
   }

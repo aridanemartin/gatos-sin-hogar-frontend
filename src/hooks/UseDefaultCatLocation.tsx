@@ -1,8 +1,13 @@
 import { useEffect, useState } from 'react';
-import { CatLocation } from '@interfaces/FormData';
+import { CatLocation } from '@interfaces/CatForm';
 import { LatLngExpression } from 'leaflet';
 
 const baseUrl = import.meta.env.VITE_BACKEND_BASE_URL;
+
+const LAS_PALMAS_CENTER_COORDS: LatLngExpression = {
+  lat: 28.129522197859583,
+  lng: -15.435619354248049
+};
 
 export const UseDefaultCatLocation = (
   catId: number,
@@ -10,8 +15,8 @@ export const UseDefaultCatLocation = (
   dbLocations: CatLocation[]
 ) => {
   const [defaultLocation, setDefaultLocation] = useState<LatLngExpression>({
-    lat: 1,
-    lng: 1
+    lat: LAS_PALMAS_CENTER_COORDS.lat,
+    lng: LAS_PALMAS_CENTER_COORDS.lng
   });
 
   useEffect(() => {
@@ -34,10 +39,10 @@ export const UseDefaultCatLocation = (
       let defaultCatLocation;
       if (locationId) {
         fetchCatLocation();
-      } else {
+      } else if (dbLocations[0].x_coord && dbLocations[0].y_coord) {
         defaultCatLocation = {
-          lat: dbLocations[0]?.x_coord ?? 1,
-          lng: dbLocations[0]?.y_coord ?? 1
+          lat: dbLocations[0]?.x_coord,
+          lng: dbLocations[0]?.y_coord
         };
         setDefaultLocation(defaultCatLocation);
       }
@@ -45,7 +50,7 @@ export const UseDefaultCatLocation = (
     };
 
     getDefaultLocation();
-  }, [dbLocations]);
+  }, [dbLocations, catId, locationId]);
 
   return defaultLocation;
 };

@@ -1,44 +1,33 @@
-import { useRef, useMemo, useState, forwardRef, Ref } from 'react';
-import { LatLngExpression, Marker as MarkerType } from 'leaflet';
+import { useRef, useMemo, forwardRef, Ref, useEffect } from 'react';
+import { LatLngExpression, Marker as MarkerType, map } from 'leaflet';
 import { MapContainer, TileLayer, Marker } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 
 interface MapProps {
-  position: LatLngExpression;
+  mapPosition: LatLngExpression;
+  handleMapPosition: (coords: LatLngExpression) => void;
 }
 
 export const Map = forwardRef(function Map(
-  { position }: MapProps,
+  { mapPosition, handleMapPosition }: MapProps,
   ref: Ref<any>
 ) {
-  const [currentPosition, setCurrentPosition] = useState(position);
   const markerRef = useRef<MarkerType>(null);
 
   const eventHandlers = useMemo(
     () => ({
       dragend() {
         const marker = markerRef.current;
-        if (marker != null) setCurrentPosition(marker.getLatLng());
+        if (marker != null) handleMapPosition(marker.getLatLng());
       }
     }),
-    []
+    [markerRef, handleMapPosition]
   );
 
-  // const disneyLandLatLng = [33.8121, -117.9190];
-  // function handleOnFlyTo() {
-  //   const { current = {} } = markerRef;
-  //   const { leafletElement: map } = current;
-
-  //   map.flyTo(disneyLandLatLng, 14, {
-  //     duration: 2
-  //   });
-  // }
-
-  console.log('===currentPosition==>', currentPosition);
   return (
     <MapContainer
-      center={currentPosition}
-      zoom={20}
+      center={mapPosition}
+      zoom={15}
       preferCanvas
       style={{ height: '400px', width: '100%' }}
       ref={ref}
@@ -46,7 +35,7 @@ export const Map = forwardRef(function Map(
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
       <Marker
         ref={markerRef}
-        position={currentPosition}
+        position={mapPosition}
         draggable
         eventHandlers={eventHandlers}
       />

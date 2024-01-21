@@ -3,12 +3,17 @@ import { LatLngExpression } from 'leaflet';
 interface LocationsListProps {
   data: any[];
   mapRef: any;
+  handleMapPosition: (coords: LatLngExpression) => void;
 }
 
-export const LocationsList = ({ data, mapRef }: LocationsListProps) => {
+export const LocationsList = ({
+  data,
+  mapRef,
+  handleMapPosition
+}: LocationsListProps) => {
   const handleClick = (coords: LatLngExpression) => {
-    console.log('mapRef=>>>>>>', mapRef.current);
     mapRef.current.flyTo(coords, 18, { duration: 2 });
+    handleMapPosition(coords);
   };
 
   return (

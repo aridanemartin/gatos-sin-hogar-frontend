@@ -52,7 +52,6 @@ export const AdoptPage = () => {
   }, [pagination.itemsPerPage, pagination.currentPage]);
 
   function fetchNextPage() {
-    // console.log('nextpage');
     if (pagination.currentPage === pagination.totalPages) return;
     setPagination((prevState: Pagination) => {
       return {
@@ -63,7 +62,6 @@ export const AdoptPage = () => {
   }
 
   function fetchPrevPage() {
-    // console.log('prevpage');
     if (pagination.currentPage === 1) return;
     setPagination((prevState: Pagination) => {
       return {

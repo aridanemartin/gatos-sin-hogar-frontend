@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect, ChangeEvent } from 'react';
+import { useRef, useState, useContext, useEffect, ChangeEvent } from 'react';
 import { TextInput } from '@components/Inputs/TextInput/TextInput';
 import { SelectInput } from '@components/Inputs/SelectInput/SelectInput';
 import { DateInput } from '@components/Inputs/DateInput/DateInput';
@@ -10,6 +10,8 @@ import { LocationsList } from '@components/LocationsList/LocationsList';
 import { UseDefaultCatLocation } from '@hooks/UseDefaultCatLocation';
 import { UseFormSetupData } from '@hooks/UseFormSetupData';
 import { CatFormFields, GenderType } from '@interfaces/CatForm';
+import { LatLngExpression } from 'leaflet';
+import { MapModal } from '@components/MapModal/MapModal';
 
 export const CatEditPage = () => {
   const { catId } = useParams();
@@ -63,15 +65,13 @@ export const CatEditPage = () => {
   const hasPassedAwayRef = useRef<HTMLSelectElement>(null);
   const locationIdRef = useRef<HTMLInputElement>(null);
   const clinicIdRef = useRef<HTMLInputElement>(null);
-  const locationsModalRef = useRef<HTMLDivElement>(null);
-  const mapRef = useRef(null);
   const [modalOpen, setModalOpen] = useState(false);
 
-  const openModal = () => {
+  const openMapModal = () => {
     setModalOpen(true);
   };
 
-  const closeModal = () => {
+  const closeMapModal = () => {
     setModalOpen(false);
   };
 
@@ -108,11 +108,6 @@ export const CatEditPage = () => {
   }, [catId]);
 
   const formData = UseFormSetupData();
-  const defaultLocation = UseDefaultCatLocation(
-    Number(catId),
-    Number(catData.locationId),
-    formData.locations
-  );
 
   const validateField = (field: string, value: string) => {
     const isError =
@@ -276,28 +271,14 @@ export const CatEditPage = () => {
         error={errors.clinicId}
       />
       {modalOpen && (
-        <Modal
-          ref={locationsModalRef}
-          width="400px"
-          height="400px"
-          closeModal={closeModal}
-        >
-          <>
-            {/*Las Canteras: [28.134747, -15.441128]*/}
-            <Map
-              position={mapRef?.current?.position ?? defaultLocation}
-              ref={mapRef}
-            />
-            <LocationsList
-              data={formData.locations}
-              // selected={formData.locations[0]}
-              mapRef={mapRef}
-            />
-            {/* ===> catData.locationId */}
-          </>
-        </Modal>
+        <MapModal
+          catId={catId}
+          catLocationId={catData.locationId}
+          locations={formData.locations}
+          closeModal={closeMapModal}
+        />
       )}
-      <button onClick={openModal}>Abrir Mapa</button>
+      <button onClick={openMapModal}>Abrir Mapa</button>
       <input type="submit" />
     </form>
   );
