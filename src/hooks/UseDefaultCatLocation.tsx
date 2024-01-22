@@ -11,8 +11,8 @@ const LAS_PALMAS_CENTER_COORDS: LatLngExpression = {
 
 export const UseDefaultCatLocation = (
   catId: number,
-  locationId: number,
-  dbLocations: CatLocation[]
+  dbLocations: CatLocation[],
+  catLocationId: number | null
 ) => {
   const [defaultLocation, setDefaultLocation] = useState<LatLngExpression>({
     lat: LAS_PALMAS_CENTER_COORDS.lat,
@@ -23,12 +23,13 @@ export const UseDefaultCatLocation = (
     const fetchCatLocation = async () => {
       try {
         const location: CatLocation = await fetch(
-          `${baseUrl}/locations/${catId}`
+          `${baseUrl}/locations/${catLocationId}`
         ).then((res) => res.json());
         const defaultCatLocation = {
           lat: location.x_coord,
           lng: location.y_coord
         };
+        console.log('===fetchedLocation==>', location);
         setDefaultLocation(defaultCatLocation);
       } catch (error) {
         console.log('error!');
@@ -37,7 +38,7 @@ export const UseDefaultCatLocation = (
 
     const getDefaultLocation = () => {
       let defaultCatLocation;
-      if (locationId) {
+      if (catLocationId) {
         fetchCatLocation();
       } else if (dbLocations[0].x_coord && dbLocations[0].y_coord) {
         defaultCatLocation = {
@@ -50,7 +51,7 @@ export const UseDefaultCatLocation = (
     };
 
     getDefaultLocation();
-  }, [dbLocations, catId, locationId]);
+  }, [dbLocations, catId, catLocationId]);
 
   return defaultLocation;
 };

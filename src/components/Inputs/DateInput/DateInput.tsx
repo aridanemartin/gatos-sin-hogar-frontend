@@ -5,7 +5,7 @@ interface DateInputProps {
   name: string;
   label: string;
   defaultValue?: string;
-  error: boolean;
+  error?: boolean;
 }
 
 export const DateInput = forwardRef(function DateInput(

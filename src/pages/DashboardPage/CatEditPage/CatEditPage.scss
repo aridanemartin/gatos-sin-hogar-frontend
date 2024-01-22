@@ -1,9 +1,9 @@
 .catPage {
   &__form {
     display: grid;
-    grid-template-areas: 'header header header' 'image info location' 'about about about' 'health health incident';
+    grid-template-areas: 'header header buttons' 'image info location' 'about about about' 'health health incident';
     grid-template-columns: 293px 1fr 1fr;
-    grid-template-rows: 1fr 293px 1fr 1fr;
+    grid-template-rows: auto 293px 1fr 1fr;
 
     h2 {
       position: inline-block;
@@ -15,7 +15,35 @@
 
   &__header {
     grid-area: header;
-    height: 100px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__buttonsSection {
+    grid-area: buttons;
+    display: flex;
+    align-items: center;
+
+    .button {
+      padding: 0.5rem 1rem;
+      border: 1px solid #444360;
+      border-radius: 12px;
+      font-weight: bold;
+      background-color: transparent;
+
+      &-cancel {
+        color: #444360;
+      }
+
+      &-save {
+        background-color: #444360;
+        color: #fff;
+      }
+
+      &:first-child {
+        margin-right: 1rem;
+      }
+    }
   }
 
   &__imageSection {

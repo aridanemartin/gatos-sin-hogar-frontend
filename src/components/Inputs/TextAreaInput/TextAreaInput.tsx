@@ -5,7 +5,7 @@ interface TextAreaInputProps {
   name: string;
   label: string;
   placeholder: string;
-  defaultValue: string;
+  defaultValue?: string;
   error?: boolean;
 }
 

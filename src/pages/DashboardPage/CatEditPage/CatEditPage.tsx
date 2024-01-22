@@ -5,35 +5,30 @@ import { DateInput } from '@components/Inputs/DateInput/DateInput';
 import { TextAreaInput } from '@components/Inputs/TextAreaInput/TextAreaInput';
 import { useParams } from 'react-router-dom';
 import { UseFormSetupData } from '@hooks/UseFormSetupData';
-import { CatFormFields, GenderType } from '@interfaces/CatForm';
+import {
+  CatApiFormSchema,
+  CatFormFields,
+  CatFormSchema,
+  GenderType
+} from '@interfaces/CatForm';
 import { MapModal } from '@components/MapModal/MapModal';
 import { CatEditFormContext } from '@contexts/CatFormContext';
 import './CatEditPage.scss';
+import { ZodError, typeToFlattenedError } from 'zod';
+
+import UseToast from '@hooks/UseToast';
 
 const baseUrl = import.meta.env.VITE_BACKEND_BASE_URL;
 
 export const CatEditPage = () => {
+  const { toastSuccess, toastError } = UseToast();
+  const [modalOpen, setModalOpen] = useState(false);
+  const [errors, setErrors] = useState(
+    {} as typeToFlattenedError<CatFormFields>
+  );
+
   const { formValues, setFormValues } = useContext(CatEditFormContext);
   const { catId } = useParams();
-
-  console.log('===formValues==>', formValues);
-
-  const [errors, setErrors] = useState({
-    name: false,
-    description: false,
-    personality: false,
-    gender: false,
-    hasChip: false,
-    picture: false,
-    breedId: false,
-    birthDate: false,
-    spayedNeutered: false,
-    medicalConditions: false,
-    dietaryNeeds: false,
-    hasPassedAway: false,
-    locationId: false,
-    clinicId: false
-  });
 
   const nameRef = useRef<HTMLInputElement>(null);
   const descriptionRef = useRef<HTMLInputElement>(null);
@@ -49,7 +44,6 @@ export const CatEditPage = () => {
   const hasPassedAwayRef = useRef<HTMLSelectElement>(null);
   const locationIdRef = useRef<HTMLInputElement>(null);
   const clinicIdRef = useRef<HTMLInputElement>(null);
-  const [modalOpen, setModalOpen] = useState(false);
 
   const openMapModal = () => {
     setModalOpen(true);
@@ -63,84 +57,84 @@ export const CatEditPage = () => {
     const fetchCatData = async () => {
       try {
         const res = await fetch(`${baseUrl}/cats/${catId}`);
-        const data = await res.json();
+        const data = CatApiFormSchema.parse(await res.json());
 
-        const updatedCatData = {
-          name: data?.name,
+        const updatedCatData: CatFormFields = {
+          name: data?.name || '',
           gender: data?.gender || 'UNKNOWN',
           birthDate: data?.birth_date || '',
           description: data?.description || '',
           personality: data?.personality || '',
-          hasChip: data?.has_chip || '',
+          hasChip: Boolean(data?.has_chip),
           picture: data?.picture || '',
-          breedId: data?.breed_id || '',
-          spayedNeutered: data?.spayed_neutered || '',
+          breedId: data?.breed_id,
+          spayedNeutered: Boolean(data?.spayed_neutered),
           medicalConditions: data?.medical_conditions || '',
           dietaryNeeds: data?.dietary_needs || '',
-          hasPassedAway: data?.has_passed_away,
-          locationId: data?.location_id || '',
-          clinicId: data?.clinic_id || ''
+          hasPassedAway: Boolean(data?.has_passed_away),
+          locationId: data?.location_id,
+          clinicId: data?.clinic_id
         };
 
         setFormValues(updatedCatData);
       } catch (error) {
-        console.log(error);
+        if (error instanceof ZodError) {
+          console.log('===zod===>', error.message);
+        } else {
+          console.log(error);
+        }
       }
     };
 
     if (catId) fetchCatData();
-  }, [catId]);
+  }, [catId, setFormValues]);
 
   const formData = UseFormSetupData();
-
-  const validateField = (field: string, value: string) => {
-    const isError =
-      value === null ||
-      value === undefined ||
-      (typeof value === 'string' && value.trim() === '');
-    setErrors((prevErrors) => ({ ...prevErrors, [field]: isError }));
-    return isError;
-  };
 
   const handleSubmit = async (event: ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const formFields: CatFormFields = {
-      name: nameRef?.current?.value,
-      description: descriptionRef?.current?.value,
-      personality: personalityRef?.current?.value,
+      name: nameRef?.current?.value || '',
+      description: descriptionRef?.current?.value || '',
+      personality: personalityRef?.current?.value || '',
       gender: (genderRef?.current?.value as GenderType) || 'UNKNOWN',
-      hasChip: Boolean(hasChipRef?.current?.value),
-      picture: pictureRef?.current?.value,
-      breedId: breedIdRef?.current?.value,
-      birthDate: birthDateRef?.current?.value,
-      spayedNeutered: Boolean(spayedNeuteredRef?.current?.value),
-      medicalConditions: medicalConditionsRef?.current?.value,
-      dietaryNeeds: dietaryNeedsRef?.current?.value,
-      hasPassedAway: Boolean(hasPassedAwayRef?.current?.value),
-      locationId: locationIdRef?.current?.value,
-      clinicId: clinicIdRef?.current?.value
+      hasChip: Boolean(hasChipRef?.current?.value === 'true'),
+      picture: pictureRef?.current?.value || '',
+      breedId: Number(breedIdRef?.current?.value) || 0,
+      birthDate: birthDateRef?.current?.value || '',
+      spayedNeutered: Boolean(spayedNeuteredRef?.current?.value === 'true'),
+      medicalConditions: medicalConditionsRef?.current?.value || '',
+      dietaryNeeds: dietaryNeedsRef?.current?.value || '',
+      hasPassedAway: Boolean(hasPassedAwayRef?.current?.value === 'true'),
+      locationId: Number(locationIdRef?.current?.value),
+      clinicId: Number(clinicIdRef?.current?.value)
     };
 
-    const hasError = Object.keys(formFields).some((field) =>
-      validateField(field, formFields[field])
-    );
+    try {
+      const validatedData = CatFormSchema.parse(formFields);
 
-    if (!hasError) {
-      console.log('Form submitted successfully');
+      await fetch(`${baseUrl}/cats/${catId ?? ''}`, {
+        method: catId ? 'PUT' : 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(validatedData)
+      });
 
-      try {
-        await fetch(`${baseUrl}/cats/${catId ?? ''}`, {
-          method: catId ? 'PUT' : 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(formFields)
-        });
-      } catch (error) {
-        console.log('error!');
+      toastSuccess('Gato guardado con éxito');
+    } catch (error) {
+      if (error instanceof ZodError) {
+        console.log('===zod===>', typeof error);
+
+        const errorObj = error.flatten();
+        setErrors(errorObj);
+      } else {
+        console.log(error);
+        toastError('Error al guardar/actualizar el gato.');
       }
     }
+    // }
   };
 
   return (
@@ -152,8 +146,15 @@ export const CatEditPage = () => {
           ref={nameRef}
           placeholder="Nombre"
           defaultValue={formValues.name}
-          error={errors.name}
+          error={errors?.fieldErrors?.name && errors?.fieldErrors?.name[0]}
         />
+      </section>
+      <section className="catPage__buttonsSection">
+        <button className="button button-cancel">Cancelar</button>
+        <button className="button button-save" type="submit">
+          {' '}
+          Guardar Cambios{' '}
+        </button>
       </section>
 
       <section className="catPage__generalInformationSection">
@@ -185,7 +186,7 @@ export const CatEditPage = () => {
             label="Fecha de nacimiento"
             ref={birthDateRef}
             defaultValue={formValues.birthDate}
-            error={errors.birthDate}
+            // error={errors?.fieldErrors?.birthDate[0]}
           />
           <SelectInput
             name="spayed"
@@ -215,7 +216,10 @@ export const CatEditPage = () => {
           ref={descriptionRef}
           placeholder="Descripción"
           defaultValue={formValues.description}
-          error={errors.description}
+          error={
+            errors?.fieldErrors?.description &&
+            errors?.fieldErrors?.description[0]
+          }
         />
         <TextInput
           name="personality"
@@ -223,17 +227,13 @@ export const CatEditPage = () => {
           ref={personalityRef}
           placeholder="Personalidad"
           defaultValue={formValues.personality}
-          error={errors.personality}
+          error={
+            errors?.fieldErrors?.personality &&
+            errors?.fieldErrors?.personality[0]
+          }
         />
       </section>
-      <TextAreaInput
-        name="medical_conditions"
-        label="Condiciones Médicas"
-        placeholder="Condiciones Médicas"
-        ref={medicalConditionsRef}
-        defaultValue={formValues.medicalConditions}
-        error={errors.medicalConditions}
-      />
+
       <section className="catPage__healthRecordsSection">
         <h2>Historial Médico:</h2>
         <TextAreaInput
@@ -242,7 +242,13 @@ export const CatEditPage = () => {
           placeholder="Dieta Específica"
           ref={dietaryNeedsRef}
           defaultValue={formValues.dietaryNeeds}
-          error={errors.dietaryNeeds}
+        />
+        <TextAreaInput
+          name="medical_conditions"
+          label="Condiciones Médicas"
+          placeholder="Condiciones Médicas"
+          ref={medicalConditionsRef}
+          defaultValue={formValues.medicalConditions}
         />
         {/* TODO: This inputs are set temporary. Remember to change it for the real
           locationId, clinicId and picture */}
@@ -254,7 +260,9 @@ export const CatEditPage = () => {
           ref={pictureRef}
           placeholder="Imagen del gato"
           defaultValue={formValues.picture}
-          error={errors.picture}
+          error={
+            errors?.fieldErrors?.picture && errors?.fieldErrors?.picture[0]
+          }
         />
       </section>
       <section className="catPage__locationSection">
@@ -264,16 +272,14 @@ export const CatEditPage = () => {
           label="Localización"
           ref={locationIdRef}
           placeholder="Ubicación"
-          defaultValue={formValues?.locationId ?? ''}
-          error={errors.locationId}
+          // defaultValue={formValues?.locationId ?? ''}
         />
         <TextInput
           name="clinicId"
           label="Clínica Asignada"
           ref={clinicIdRef}
           placeholder="Clínica Asignada"
-          defaultValue={formValues?.clinicId ?? ''}
-          error={errors.clinicId}
+          // defaultValue={formValues?.clinicId ?? ''}
         />
         {modalOpen && (
           <MapModal
@@ -285,7 +291,6 @@ export const CatEditPage = () => {
         )}
         <button onClick={openMapModal}>Abrir Mapa</button>
       </section>
-      <input type="submit" />
     </form>
   );
 };

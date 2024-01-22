@@ -4,19 +4,13 @@ import './TextInput.scss';
 interface TextInputProps {
   name: string;
   label: string;
-  placeholder: string;
+  placeholder?: string;
   defaultValue?: string;
-  error?: boolean;
+  error?: string;
 }
 
 export const TextInput = forwardRef(function TextInput(
-  {
-    name,
-    label,
-    placeholder,
-    defaultValue = '',
-    error = false
-  }: TextInputProps,
+  { name, label, placeholder, defaultValue = '', error }: TextInputProps,
   ref: Ref<HTMLInputElement>
 ) {
   const [value, setValue] = useState(defaultValue);
@@ -40,7 +34,7 @@ export const TextInput = forwardRef(function TextInput(
         placeholder={placeholder}
         value={value}
       />
-      {error && <p>El input está vacío</p>}
+      {error && <p>{error}</p>}
     </div>
   );
 });

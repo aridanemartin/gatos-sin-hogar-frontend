@@ -27,7 +27,6 @@ export const SelectInput = forwardRef(function SelectInput(
   ref: Ref<HTMLSelectElement>
 ) {
   const [value, setValue] = useState(defaultValue);
-  console.log('===defaultvalue==>', label, defaultValue);
 
   useEffect(() => {
     setValue(defaultValue);

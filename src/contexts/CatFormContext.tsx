@@ -1,58 +1,37 @@
-import { Gender } from '@interfaces/CatForm';
+import { CatFormFields } from '@interfaces/CatForm';
 import React, { createContext, useState, ReactNode } from 'react';
 
-const initialFormValues = {
+const initialFormValues: CatFormFields = {
   name: '',
   description: '',
   personality: '',
-  gender: 'UNKNOWN' as unknown as Gender,
-  hasChip: false,
+  gender: 'UNKNOWN',
+  hasChip: 0,
   picture: '',
-  breedId: '',
+  breedId: null,
   birthDate: '',
-  spayedNeutered: false,
+  spayedNeutered: 0,
   medicalConditions: '',
   dietaryNeeds: '',
-  hasPassedAway: false,
+  hasPassedAway: 0,
   locationId: '',
   clinicId: ''
 };
-
-interface CatEditFormValues {
-  name: string;
-  description: string;
-  personality: string;
-  gender: Gender;
-  hasChip: boolean;
-  picture: string;
-  breedId: string;
-  birthDate: string;
-  spayedNeutered: boolean;
-  medicalConditions: string;
-  dietaryNeeds: string;
-  hasPassedAway: boolean;
-  locationId: string;
-  clinicId: string;
-}
-
-// Define the context type
 interface CatEditFormContextProps {
-  formValues: CatEditFormValues;
-  setFormValues: React.Dispatch<React.SetStateAction<CatEditFormValues>>;
+  formValues: CatFormFields;
+  setFormValues: React.Dispatch<React.SetStateAction<CatFormFields>>;
 }
 
-// Create the context with an initial state
 const CatEditFormContext = createContext<CatEditFormContextProps>({
   formValues: initialFormValues,
   setFormValues: () => {}
 });
 
-// Create a provider component to wrap around your application
 const CatEditFormContextProvider: React.FC<{ children: ReactNode }> = ({
   children
 }) => {
   const [formValues, setFormValues] =
-    useState<CatEditFormValues>(initialFormValues);
+    useState<CatFormFields>(initialFormValues);
 
   return (
     <CatEditFormContext.Provider value={{ formValues, setFormValues }}>

@@ -1,5 +1,9 @@
-import { useRef, useMemo, forwardRef, Ref, useEffect } from 'react';
-import { LatLngExpression, Marker as MarkerType, map } from 'leaflet';
+import { useRef, useMemo, forwardRef, Ref } from 'react';
+import {
+  LatLngExpression,
+  Marker as MarkerType,
+  Map as LeafletMapType
+} from 'leaflet';
 import { MapContainer, TileLayer, Marker } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 
@@ -10,7 +14,7 @@ interface MapProps {
 
 export const Map = forwardRef(function Map(
   { mapPosition, handleMapPosition }: MapProps,
-  ref: Ref<any>
+  ref: Ref<LeafletMapType>
 ) {
   const markerRef = useRef<MarkerType>(null);
 
@@ -23,6 +27,8 @@ export const Map = forwardRef(function Map(
     }),
     [markerRef, handleMapPosition]
   );
+
+  console.log('===map==>', mapPosition);
 
   return (
     <MapContainer

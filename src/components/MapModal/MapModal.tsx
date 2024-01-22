@@ -7,10 +7,11 @@ import { useState } from 'react';
 import { CatLocation } from '@interfaces/CatForm';
 import { UseDefaultCatLocation } from '@hooks/UseDefaultCatLocation';
 import './MapModal.scss';
-
+import { TextInput } from '@components/Inputs/TextInput/TextInput';
+import { Map as LeafletMap } from 'leaflet';
 interface MapModalProps {
   catId: string | undefined;
-  catLocationId: string | undefined;
+  catLocationId: number | null;
   locations: CatLocation[];
   closeModal: () => void;
 }
@@ -22,12 +23,12 @@ export const MapModal = ({
   closeModal
 }: MapModalProps) => {
   const locationsModalRef = useRef<HTMLDivElement>(null);
-  const mapRef = useRef(null);
+  const mapRef = useRef<LeafletMap | null>(null);
 
   const defaultLocation = UseDefaultCatLocation(
     Number(catId),
-    Number(catLocationId),
-    locations
+    locations,
+    catLocationId
   );
   const [mapPosition, setMapPosition] = useState(defaultLocation);
 
@@ -38,7 +39,7 @@ export const MapModal = ({
   useEffect(() => {
     if (mapRef.current) {
       handleMapPosition(defaultLocation);
-      mapRef?.current.flyTo(defaultLocation, 18, { duration: 2 });
+      mapRef?.current?.flyTo(defaultLocation, 18, { duration: 2 });
     }
   }, [defaultLocation]);
 
@@ -54,6 +55,11 @@ export const MapModal = ({
           handleMapPosition={handleMapPosition}
           data={locations}
           mapRef={mapRef}
+        />
+        <TextInput
+          label="Añadir Nueva Localización"
+          name="locationName"
+          placeholder="Nombre de la localización"
         />
       </>
     </Modal>
