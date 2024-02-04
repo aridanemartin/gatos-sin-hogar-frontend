@@ -17,10 +17,10 @@ import './CatEditPage.scss';
 import { ZodError, typeToFlattenedError } from 'zod';
 
 import UseToast from '@hooks/UseToast';
-
-const baseUrl = import.meta.env.VITE_BACKEND_BASE_URL;
+import { environment } from '@consts/environments';
 
 export const CatEditPage = () => {
+  const { baseUrl } = environment;
   const { toastSuccess, toastError } = UseToast();
   const [modalOpen, setModalOpen] = useState(false);
   const [errors, setErrors] = useState(
@@ -91,7 +91,7 @@ export const CatEditPage = () => {
 
   const formData = UseFormSetupData();
 
-  const handleSubmit = async (event: ChangeEvent<HTMLFormElement>) => {
+  const handleCatFormSubmit = async (event: ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const formFields: CatFormFields = {
@@ -134,11 +134,10 @@ export const CatEditPage = () => {
         toastError('Error al guardar/actualizar el gato.');
       }
     }
-    // }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="catPage__form">
+    <form onSubmit={handleCatFormSubmit} className="catPage__form">
       <section className="catPage__header">
         <TextInput
           name="name"

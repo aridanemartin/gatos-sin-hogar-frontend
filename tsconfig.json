@@ -27,7 +27,8 @@
       "@hooks/*": ["./src/hooks/*"],
       "@helpers/*": ["./src/helpers/*"],
       "@interfaces/*": ["./src/interfaces/*"],
-      "@contexts/*": ["./src/contexts/*"]
+      "@contexts/*": ["./src/contexts/*"],
+      "@consts/*": ["./src/consts/*"]
     }
   },
   "include": ["src"],

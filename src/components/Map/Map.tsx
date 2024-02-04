@@ -28,7 +28,7 @@ export const Map = forwardRef(function Map(
     [markerRef, handleMapPosition]
   );
 
-  console.log('===map==>', mapPosition);
+  // console.log('===map==>', mapPosition);
 
   return (
     <MapContainer

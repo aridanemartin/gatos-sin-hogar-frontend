@@ -93,5 +93,24 @@ export const CatApiFormSchema = z.object({
   clinic_id: z.number().nullable()
 });
 
+export const CatLocationFormSchema = z.object({
+  name: z
+    .string({ invalid_type_error })
+    .min(1, required_error)
+    .max(255, value_too_long),
+  description: z.string({ invalid_type_error }).max(255),
+  x_coord: z.number(),
+  y_coord: z.number()
+});
+
+export const CatLocationApiFormSchema = z.object({
+  name: z.string(),
+  description: z.string().nullable(),
+  x_coord: z.number(),
+  y_coord: z.number()
+});
+
 export type CatFormFields = z.infer<typeof CatFormSchema>;
 export type CatApiFormFields = z.infer<typeof CatApiFormSchema>;
+export type CatLocationFormFields = z.infer<typeof CatLocationFormSchema>;
+export type CatLocationApiFormFields = z.infer<typeof CatLocationApiFormSchema>;

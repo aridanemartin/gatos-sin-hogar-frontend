@@ -6,17 +6,18 @@ const initialFormValues: CatFormFields = {
   description: '',
   personality: '',
   gender: 'UNKNOWN',
-  hasChip: 0,
+  hasChip: false,
   picture: '',
   breedId: null,
   birthDate: '',
-  spayedNeutered: 0,
+  spayedNeutered: false,
   medicalConditions: '',
   dietaryNeeds: '',
-  hasPassedAway: 0,
-  locationId: '',
-  clinicId: ''
+  hasPassedAway: false,
+  locationId: null,
+  clinicId: null
 };
+
 interface CatEditFormContextProps {
   formValues: CatFormFields;
   setFormValues: React.Dispatch<React.SetStateAction<CatFormFields>>;
