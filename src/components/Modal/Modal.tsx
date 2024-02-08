@@ -1,4 +1,5 @@
 import { forwardRef, Ref } from 'react';
+import './Modal.scss';
 
 interface ModalProps {
   children: JSX.Element;
@@ -16,7 +17,9 @@ export const Modal = forwardRef(function Modal(
       <div className={`${className}__background`} onClick={closeModal}></div>
       <div className={className} ref={ref}>
         {children}
-        <button onClick={closeModal}>Close</button>
+        <button className="modal__closeButton" onClick={closeModal}>
+          Close
+        </button>
       </div>
     </>
   );

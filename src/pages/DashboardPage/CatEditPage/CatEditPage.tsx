@@ -29,6 +29,7 @@ export const CatEditPage = () => {
 
   const { formValues, setFormValues } = useContext(CatEditFormContext);
   const { catId } = useParams();
+  console.log('===formValues==>', formValues);
 
   const nameRef = useRef<HTMLInputElement>(null);
   const descriptionRef = useRef<HTMLInputElement>(null);
@@ -87,7 +88,7 @@ export const CatEditPage = () => {
     };
 
     if (catId) fetchCatData();
-  }, [catId, setFormValues]);
+  }, [catId, setFormValues, baseUrl]);
 
   const formData = UseFormSetupData();
 
@@ -125,8 +126,6 @@ export const CatEditPage = () => {
       toastSuccess('Gato guardado con éxito');
     } catch (error) {
       if (error instanceof ZodError) {
-        console.log('===zod===>', typeof error);
-
         const errorObj = error.flatten();
         setErrors(errorObj);
       } else {

@@ -1,9 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { CatFormData } from '@interfaces/CatForm';
+import { EventsContext } from '@contexts/EventsContext';
 
 const baseUrl = import.meta.env.VITE_BACKEND_BASE_URL;
 
 export const UseFormSetupData = () => {
+  const eventEmitters = useContext(EventsContext);
+
   const [formData, setFormData] = useState<CatFormData>({
     genders: [
       {
@@ -40,8 +43,26 @@ export const UseFormSetupData = () => {
       }
     };
 
+    const fetchLocations = async () => {
+      const locations = await fetch(`${baseUrl}/locations`);
+      const locationsData = await locations.json();
+      setFormData((prev) => ({ ...prev, locations: locationsData }));
+    };
+
     fetchData();
-  }, []);
+
+    // Subscribe to the event
+    if (eventEmitters) {
+      eventEmitters.on('updateLocations', fetchLocations);
+    }
+
+    // Unsubscribe on component unmount
+    return () => {
+      if (eventEmitters) {
+        eventEmitters.off('updateLocations', fetchData);
+      }
+    };
+  }, [eventEmitters]);
 
   return formData;
 };

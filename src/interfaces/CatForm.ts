@@ -98,7 +98,7 @@ export const CatLocationFormSchema = z.object({
     .string({ invalid_type_error })
     .min(1, required_error)
     .max(255, value_too_long),
-  description: z.string({ invalid_type_error }).max(255),
+  description: z.optional(z.string({ invalid_type_error }).max(255).nullable()),
   x_coord: z.number(),
   y_coord: z.number()
 });

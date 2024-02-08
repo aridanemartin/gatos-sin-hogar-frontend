@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { CatLocation } from '@interfaces/CatForm';
-import { LatLngExpression } from 'leaflet';
+import { LatLngExpression, LatLngLiteral } from 'leaflet';
 
 const baseUrl = import.meta.env.VITE_BACKEND_BASE_URL;
 
@@ -14,7 +14,7 @@ export const UseDefaultCatLocation = (
   dbLocations: CatLocation[],
   catLocationId: number | null
 ) => {
-  const [defaultLocation, setDefaultLocation] = useState<LatLngExpression>({
+  const [defaultLocation, setDefaultLocation] = useState<LatLngLiteral>({
     lat: LAS_PALMAS_CENTER_COORDS.lat,
     lng: LAS_PALMAS_CENTER_COORDS.lng
   });
@@ -29,7 +29,7 @@ export const UseDefaultCatLocation = (
           lat: location.x_coord,
           lng: location.y_coord
         };
-        console.log('===fetchedLocation==>', location);
+
         setDefaultLocation(defaultCatLocation);
       } catch (error) {
         console.log('error!');

@@ -2,7 +2,7 @@ import { useRef, useEffect } from 'react';
 import { LocationsList } from '@components/LocationsList/LocationsList';
 import { Map } from '@components/Map/Map';
 import { Modal } from '@components/Modal/Modal';
-import { LatLngExpression } from 'leaflet';
+import { LatLngExpression, LatLngLiteral } from 'leaflet';
 import { useState } from 'react';
 import { CatLocation } from '@interfaces/CatForm';
 import { UseDefaultCatLocation } from '@hooks/UseDefaultCatLocation';
@@ -31,7 +31,8 @@ export const MapModal = ({
     locations,
     catLocationId
   );
-  const [currentMapPosition, setCurrentMapPosition] = useState(defaultLocation);
+  const [currentMapPosition, setCurrentMapPosition] =
+    useState<LatLngExpression>(defaultLocation);
 
   const handleMapPosition = (position: LatLngExpression) => {
     setCurrentMapPosition(position);
@@ -46,19 +47,20 @@ export const MapModal = ({
 
   return (
     <Modal className="mapModal" ref={locationsModalRef} closeModal={closeModal}>
-      <>
+      <div className="mapModal__content">
         <Map
           mapPosition={currentMapPosition}
           handleMapPosition={handleMapPosition}
           ref={mapRef}
         />
+        <AddLocationForm coords={currentMapPosition as LatLngLiteral} />
         <LocationsList
+          currentMapPosition={currentMapPosition}
           handleMapPosition={handleMapPosition}
           data={locations}
           mapRef={mapRef}
         />
-        <AddLocationForm coords={currentMapPosition} />
-      </>
+      </div>
     </Modal>
   );
 };

@@ -28,14 +28,12 @@ export const Map = forwardRef(function Map(
     [markerRef, handleMapPosition]
   );
 
-  // console.log('===map==>', mapPosition);
-
   return (
     <MapContainer
       center={mapPosition}
       zoom={15}
       preferCanvas
-      style={{ height: '400px', width: '100%' }}
+      style={{ height: '35%', width: '100%' }}
       ref={ref}
     >
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />

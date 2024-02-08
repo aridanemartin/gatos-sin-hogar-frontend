@@ -2,20 +2,21 @@ import {
   CatLocationFormFields,
   CatLocationFormSchema
 } from '@interfaces/CatForm';
-import { LatLng } from 'leaflet';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { LatLngLiteral } from 'leaflet';
+import { ChangeEvent, useContext, useEffect, useState } from 'react';
 import { environment } from '@consts/environments';
 import UseToast from '@hooks/UseToast';
 import { ZodError, typeToFlattenedError } from 'zod';
+import { EventsContext } from '@contexts/EventsContext';
+import './AddLocationForm.scss';
 
-export const AddLocationForm = ({ coords }: { coords: LatLng }) => {
+export const AddLocationForm = ({ coords }: { coords: LatLngLiteral }) => {
   const { baseUrl } = environment;
+  const eventsEmitter = useContext(EventsContext);
   const { toastSuccess, toastError } = UseToast();
   const [errors, setErrors] = useState(
     {} as typeToFlattenedError<CatLocationFormFields>
   );
-
-  console.log('===errors ==>', errors);
 
   const [selectedLocation, setSelectedLocation] = useState({
     name: null,
@@ -53,13 +54,17 @@ export const AddLocationForm = ({ coords }: { coords: LatLng }) => {
         body: JSON.stringify(validatedData)
       });
 
-      toastSuccess('Gato guardado con éxito');
+      // Emit the event after successfully adding a location
+      if (eventsEmitter) {
+        eventsEmitter.emit('updateLocations', null);
+      }
+
+      toastSuccess('Localización guardada con éxito');
     } catch (error) {
       if (error instanceof ZodError) {
-        console.log('===zod===>', typeof error);
-
         const errorObj = error.flatten();
         setErrors(errorObj);
+        toastError(errors.toString()); //todo: revisar que devuelve error.toString()
       } else {
         console.log(error);
         toastError('Error al guardar/actualizar el gato.');
@@ -68,21 +73,34 @@ export const AddLocationForm = ({ coords }: { coords: LatLng }) => {
   }
 
   return (
-    <div>
-      <label>Añadir Nueva Localización</label>
-      <input
-        type="text"
-        name="name"
-        placeholder="Nombre de la localización"
-        onChange={handleChangeInput}
-      />
-      <label>Añadir Descripción</label>
-      <textarea
-        name="description"
-        placeholder="Descripción de la localización"
-        onChange={handleChangeInput}
-      ></textarea>
-      <button onClick={handleAddLocationFormSubmit}>Añadir Localización</button>
+    <div className="addLocationForm">
+      <h2>Añadir Nueva Localización</h2>
+      <section className="addLocationForm__formSection">
+        <article className="addLocationForm__nameSection">
+          <label className="addLocationForm__label">Nombre</label>
+          <textarea
+            className="addLocationForm__input"
+            name="name"
+            placeholder="Nombre de la localización"
+            onChange={handleChangeInput}
+          />
+        </article>
+        <article className="addLocationForm__descriptionSection">
+          <label className="addLocationForm__label">Descripción</label>
+          <textarea
+            className="addLocationForm__textarea"
+            name="description"
+            placeholder="Descripción de la localización"
+            onChange={handleChangeInput}
+          />
+        </article>
+      </section>
+      <button
+        className="addLocationForm__button"
+        onClick={handleAddLocationFormSubmit}
+      >
+        Añadir Localización
+      </button>
     </div>
   );
 };

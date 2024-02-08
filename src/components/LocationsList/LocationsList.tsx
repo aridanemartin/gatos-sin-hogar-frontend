@@ -1,33 +1,48 @@
-import { LatLngExpression } from 'leaflet';
+import { LatLngExpression, Map as LeafletMapType } from 'leaflet';
+import './LocationList.scss';
+import { RefObject } from 'react';
 
+export interface Location {
+  id: number;
+  name: string;
+  x_coord: number;
+  y_coord: number;
+}
 interface LocationsListProps {
-  data: any[];
-  mapRef: any;
+  data: Location[];
+  mapRef: RefObject<LeafletMapType>;
+  currentMapPosition: LatLngExpression;
   handleMapPosition: (coords: LatLngExpression) => void;
 }
 
 export const LocationsList = ({
   data,
   mapRef,
+  currentMapPosition,
   handleMapPosition
 }: LocationsListProps) => {
   const handleClick = (coords: LatLngExpression) => {
-    mapRef.current.flyTo(coords, 18, { duration: 2 });
+    if (JSON.stringify(coords) === JSON.stringify(currentMapPosition)) return;
+    mapRef?.current?.flyTo(coords, 18, { duration: 2 });
     handleMapPosition(coords);
   };
 
   return (
-    <ul>
-      {data.map((location) => {
-        return (
-          <li
-            onClick={() => handleClick([location.x_coord, location.y_coord])}
-            key={location.id}
-          >
-            {location.name}
-          </li>
-        );
-      })}
-    </ul>
+    <>
+      <h2>Localizaciones:</h2>
+      <ul className="locationList">
+        {data.map((location) => {
+          return (
+            <li
+              className="locationList__item"
+              onClick={() => handleClick([location.x_coord, location.y_coord])}
+              key={location.id}
+            >
+              {location.name}
+            </li>
+          );
+        })}
+      </ul>
+    </>
   );
 };

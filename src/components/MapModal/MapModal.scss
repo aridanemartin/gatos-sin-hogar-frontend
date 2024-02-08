@@ -1,5 +1,5 @@
 .mapModal {
-  min-width: 30rem;
+  min-width: 40rem;
   max-width: 50rem;
   height: 90%;
   padding: 10px;
@@ -8,6 +8,12 @@
   right: 50%;
   transform: translate(50%, -50%);
   background-color: white;
+
+  &__content {
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+  }
 
   //create an overlay to avoid the user clicking outside the modal
   &__background {
