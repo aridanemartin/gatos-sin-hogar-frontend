@@ -5,12 +5,7 @@ import { DateInput } from '@components/Inputs/DateInput/DateInput';
 import { TextAreaInput } from '@components/Inputs/TextAreaInput/TextAreaInput';
 import { useParams } from 'react-router-dom';
 import { UseFormSetupData } from '@hooks/UseFormSetupData';
-import {
-  CatApiFormSchema,
-  CatFormFields,
-  CatFormSchema,
-  GenderType
-} from '@interfaces/CatForm';
+import { CatFormFields, CatFormSchema, GenderType } from '@interfaces/CatForm';
 import { MapModal } from '@components/MapModal/MapModal';
 import { CatEditFormContext } from '@contexts/CatFormContext';
 import './CatEditPage.scss';
@@ -18,18 +13,25 @@ import { ZodError, typeToFlattenedError } from 'zod';
 
 import UseToast from '@hooks/UseToast';
 import { environment } from '@consts/environments';
+import { FetchCatDataResult, useFetchCatData } from '@hooks/useFetchCatData';
 
 export const CatEditPage = () => {
   const { baseUrl } = environment;
+  const { catId } = useParams();
   const { toastSuccess, toastError } = UseToast();
   const [modalOpen, setModalOpen] = useState(false);
   const [errors, setErrors] = useState(
     {} as typeToFlattenedError<CatFormFields>
   );
 
-  const { formValues, setFormValues } = useContext(CatEditFormContext);
-  const { catId } = useParams();
-  console.log('===formValues==>', formValues);
+  const { selectedFormValues, setSelectedFormValues } =
+    useContext(CatEditFormContext);
+  const { loading, catData, error }: FetchCatDataResult = useFetchCatData(
+    catId,
+    baseUrl
+  );
+
+  console.log('===loading, error==>', loading, error);
 
   const nameRef = useRef<HTMLInputElement>(null);
   const descriptionRef = useRef<HTMLInputElement>(null);
@@ -43,7 +45,6 @@ export const CatEditPage = () => {
   const medicalConditionsRef = useRef<HTMLTextAreaElement>(null);
   const dietaryNeedsRef = useRef<HTMLTextAreaElement>(null);
   const hasPassedAwayRef = useRef<HTMLSelectElement>(null);
-  const locationIdRef = useRef<HTMLInputElement>(null);
   const clinicIdRef = useRef<HTMLInputElement>(null);
 
   const openMapModal = () => {
@@ -55,42 +56,15 @@ export const CatEditPage = () => {
   };
 
   useEffect(() => {
-    const fetchCatData = async () => {
-      try {
-        const res = await fetch(`${baseUrl}/cats/${catId}`);
-        const data = CatApiFormSchema.parse(await res.json());
-
-        const updatedCatData: CatFormFields = {
-          name: data?.name || '',
-          gender: data?.gender || 'UNKNOWN',
-          birthDate: data?.birth_date || '',
-          description: data?.description || '',
-          personality: data?.personality || '',
-          hasChip: Boolean(data?.has_chip),
-          picture: data?.picture || '',
-          breedId: data?.breed_id,
-          spayedNeutered: Boolean(data?.spayed_neutered),
-          medicalConditions: data?.medical_conditions || '',
-          dietaryNeeds: data?.dietary_needs || '',
-          hasPassedAway: Boolean(data?.has_passed_away),
-          locationId: data?.location_id,
-          clinicId: data?.clinic_id
-        };
-
-        setFormValues(updatedCatData);
-      } catch (error) {
-        if (error instanceof ZodError) {
-          console.log('===zod===>', error.message);
-        } else {
-          console.log(error);
-        }
-      }
-    };
-
-    if (catId) fetchCatData();
-  }, [catId, setFormValues, baseUrl]);
+    if (catData) {
+      setSelectedFormValues(catData);
+    }
+  }, [catData, setSelectedFormValues]);
 
   const formData = UseFormSetupData();
+  const selectedLocation = formData.locations.find(
+    (location) => location.id === selectedFormValues.locationId
+  );
 
   const handleCatFormSubmit = async (event: ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -108,7 +82,7 @@ export const CatEditPage = () => {
       medicalConditions: medicalConditionsRef?.current?.value || '',
       dietaryNeeds: dietaryNeedsRef?.current?.value || '',
       hasPassedAway: Boolean(hasPassedAwayRef?.current?.value === 'true'),
-      locationId: Number(locationIdRef?.current?.value),
+      locationId: Number(selectedFormValues.locationId),
       clinicId: Number(clinicIdRef?.current?.value)
     };
 
@@ -135,6 +109,10 @@ export const CatEditPage = () => {
     }
   };
 
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <form onSubmit={handleCatFormSubmit} className="catPage__form">
       <section className="catPage__header">
@@ -143,7 +121,7 @@ export const CatEditPage = () => {
           label="Nombre"
           ref={nameRef}
           placeholder="Nombre"
-          defaultValue={formValues.name}
+          defaultValue={selectedFormValues.name}
           error={errors?.fieldErrors?.name && errors?.fieldErrors?.name[0]}
         />
       </section>
@@ -163,14 +141,14 @@ export const CatEditPage = () => {
             label="Género"
             options={formData.genders}
             ref={genderRef}
-            defaultValue={formValues.gender as unknown as string}
+            defaultValue={selectedFormValues.gender as unknown as string}
           />
           <SelectInput
             name="chip"
             label="Chip"
             isBooleanSelect={true}
             ref={hasChipRef}
-            defaultValue={Boolean(formValues.hasChip).toString()}
+            defaultValue={Boolean(selectedFormValues.hasChip).toString()}
           />
           <SelectInput
             name="breed"
@@ -183,7 +161,7 @@ export const CatEditPage = () => {
             name="birth_date"
             label="Fecha de nacimiento"
             ref={birthDateRef}
-            defaultValue={formValues.birthDate}
+            defaultValue={selectedFormValues.birthDate}
             // error={errors?.fieldErrors?.birthDate[0]}
           />
           <SelectInput
@@ -191,21 +169,21 @@ export const CatEditPage = () => {
             label="Castrado/Esterilizado"
             isBooleanSelect={true}
             ref={spayedNeuteredRef}
-            defaultValue={Boolean(formValues.spayedNeutered).toString()}
+            defaultValue={Boolean(selectedFormValues.spayedNeutered).toString()}
           />
           <SelectInput
             name="passed"
             label="Ha Fallecido"
             isBooleanSelect={true}
             ref={hasPassedAwayRef}
-            defaultValue={Boolean(formValues.hasPassedAway).toString()}
+            defaultValue={Boolean(selectedFormValues.hasPassedAway).toString()}
           />
         </div>
       </section>
       <section className="catPage__aboutSection">
         <h2>
-          {formValues?.name
-            ? `Sobre ${formValues.name}:`
+          {selectedFormValues?.name
+            ? `Sobre ${selectedFormValues.name}:`
             : 'Sobre el/la gato/a:'}
         </h2>
         <TextInput
@@ -213,7 +191,7 @@ export const CatEditPage = () => {
           label="Descripción"
           ref={descriptionRef}
           placeholder="Descripción"
-          defaultValue={formValues.description}
+          defaultValue={selectedFormValues.description}
           error={
             errors?.fieldErrors?.description &&
             errors?.fieldErrors?.description[0]
@@ -224,7 +202,7 @@ export const CatEditPage = () => {
           label="Personalidad"
           ref={personalityRef}
           placeholder="Personalidad"
-          defaultValue={formValues.personality}
+          defaultValue={selectedFormValues.personality}
           error={
             errors?.fieldErrors?.personality &&
             errors?.fieldErrors?.personality[0]
@@ -239,14 +217,14 @@ export const CatEditPage = () => {
           label="Dieta Específica"
           placeholder="Dieta Específica"
           ref={dietaryNeedsRef}
-          defaultValue={formValues.dietaryNeeds}
+          defaultValue={selectedFormValues.dietaryNeeds}
         />
         <TextAreaInput
           name="medical_conditions"
           label="Condiciones Médicas"
           placeholder="Condiciones Médicas"
           ref={medicalConditionsRef}
-          defaultValue={formValues.medicalConditions}
+          defaultValue={selectedFormValues.medicalConditions}
         />
         {/* TODO: This inputs are set temporary. Remember to change it for the real
           locationId, clinicId and picture */}
@@ -257,7 +235,7 @@ export const CatEditPage = () => {
           label="Foto"
           ref={pictureRef}
           placeholder="Imagen del gato"
-          defaultValue={formValues.picture}
+          defaultValue={selectedFormValues.picture}
           error={
             errors?.fieldErrors?.picture && errors?.fieldErrors?.picture[0]
           }
@@ -265,13 +243,7 @@ export const CatEditPage = () => {
       </section>
       <section className="catPage__locationSection">
         <h2>Localización:</h2>
-        <TextInput
-          name="location"
-          label="Localización"
-          ref={locationIdRef}
-          placeholder="Ubicación"
-          // defaultValue={formValues?.locationId ?? ''}
-        />
+        {selectedLocation?.name ?? 'Localización desconocida'}
         <TextInput
           name="clinicId"
           label="Clínica Asignada"
@@ -282,7 +254,7 @@ export const CatEditPage = () => {
         {modalOpen && (
           <MapModal
             catId={catId}
-            catLocationId={formValues.locationId}
+            catLocationId={selectedFormValues.locationId}
             locations={formData.locations}
             closeModal={closeMapModal}
           />

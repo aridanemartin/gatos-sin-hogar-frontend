@@ -1,6 +1,7 @@
 import { LatLngExpression, Map as LeafletMapType } from 'leaflet';
 import './LocationList.scss';
-import { RefObject } from 'react';
+import { RefObject, useContext } from 'react';
+import { CatEditFormContext } from '@contexts/CatFormContext';
 
 export interface Location {
   id: number;
@@ -21,10 +22,25 @@ export const LocationsList = ({
   currentMapPosition,
   handleMapPosition
 }: LocationsListProps) => {
+  const { setSelectedFormValues } = useContext(CatEditFormContext);
+
   const handleClick = (coords: LatLngExpression) => {
     if (JSON.stringify(coords) === JSON.stringify(currentMapPosition)) return;
     mapRef?.current?.flyTo(coords, 18, { duration: 2 });
     handleMapPosition(coords);
+
+    const selectedLocationId = data.find(
+      (location) =>
+        location.x_coord === coords[0 as keyof LatLngExpression] &&
+        location.y_coord === coords[1 as keyof LatLngExpression]
+    )?.id;
+
+    if (selectedLocationId) {
+      setSelectedFormValues((prev) => ({
+        ...prev,
+        locationId: selectedLocationId
+      }));
+    }
   };
 
   return (

@@ -1,7 +1,7 @@
 import { CatFormFields } from '@interfaces/CatForm';
 import React, { createContext, useState, ReactNode } from 'react';
 
-const initialFormValues: CatFormFields = {
+const InitialFormValues: CatFormFields = {
   name: '',
   description: '',
   personality: '',
@@ -19,23 +19,28 @@ const initialFormValues: CatFormFields = {
 };
 
 interface CatEditFormContextProps {
-  formValues: CatFormFields;
-  setFormValues: React.Dispatch<React.SetStateAction<CatFormFields>>;
+  selectedFormValues: CatFormFields;
+  setSelectedFormValues: React.Dispatch<React.SetStateAction<CatFormFields>>;
 }
 
 const CatEditFormContext = createContext<CatEditFormContextProps>({
-  formValues: initialFormValues,
-  setFormValues: () => {}
+  selectedFormValues: InitialFormValues,
+  setSelectedFormValues: () => {}
 });
 
 const CatEditFormContextProvider: React.FC<{ children: ReactNode }> = ({
   children
 }) => {
-  const [formValues, setFormValues] =
-    useState<CatFormFields>(initialFormValues);
+  const [selectedFormValues, setSelectedFormValues] =
+    useState<CatFormFields>(InitialFormValues);
 
   return (
-    <CatEditFormContext.Provider value={{ formValues, setFormValues }}>
+    <CatEditFormContext.Provider
+      value={{
+        selectedFormValues,
+        setSelectedFormValues
+      }}
+    >
       {children}
     </CatEditFormContext.Provider>
   );

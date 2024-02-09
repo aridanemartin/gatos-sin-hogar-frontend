@@ -16,27 +16,24 @@ export const UseFormSetupData = () => {
     ],
     breeds: [],
     locations: [],
-    clinics: [],
-    incidents: []
+    clinics: []
   });
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [genders, breeds, locations, clinics, incidents] =
-          await Promise.all([
-            fetch(`${baseUrl}/genders`).then((res) => res.json()),
-            fetch(`${baseUrl}/breeds`).then((res) => res.json()),
-            fetch(`${baseUrl}/locations`).then((res) => res.json()),
-            fetch(`${baseUrl}/clinics`).then((res) => res.json()),
-            fetch(`${baseUrl}/incidents`).then((res) => res.json())
-          ]);
+        const [genders, breeds, locations, clinics] = await Promise.all([
+          fetch(`${baseUrl}/genders`).then((res) => res.json()),
+          fetch(`${baseUrl}/breeds`).then((res) => res.json()),
+          fetch(`${baseUrl}/locations`).then((res) => res.json()),
+          fetch(`${baseUrl}/clinics`).then((res) => res.json())
+          // fetch(`${baseUrl}/incidents`).then((res) => res.json())
+        ]);
         setFormData({
           genders,
           breeds,
           locations,
-          clinics,
-          incidents
+          clinics
         });
       } catch (error) {
         console.log('error!');

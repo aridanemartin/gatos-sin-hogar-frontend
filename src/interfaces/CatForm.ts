@@ -41,7 +41,6 @@ export interface CatFormData {
   breeds: CatBreeds[];
   locations: CatLocation[];
   clinics: Clinic[];
-  incidents: Incident[];
 }
 
 const invalid_type_error = 'Utilice un tipo de dato válido';
