@@ -47,7 +47,7 @@ export const AddLocationForm = ({ coords }: { coords: LatLngLiteral }) => {
     try {
       const validatedData = CatLocationFormSchema.parse(selectedLocation);
 
-      await fetch(`${baseUrl}/locations/`, {
+      await fetch(`${baseUrl}/locations`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
