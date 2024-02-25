@@ -11,6 +11,7 @@ const InitialFormValues: CatFormFields = {
   breedId: null,
   birthDate: '',
   spayedNeutered: false,
+  hasLeukemia: null,
   medicalConditions: '',
   dietaryNeeds: '',
   hasPassedAway: false,

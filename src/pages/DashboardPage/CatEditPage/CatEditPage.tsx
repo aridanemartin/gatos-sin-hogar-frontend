@@ -41,6 +41,7 @@ export const CatEditPage = ({ isEditPage }: { isEditPage?: boolean }) => {
   const breedIdRef = useRef<HTMLSelectElement>(null);
   const birthDateRef = useRef<HTMLInputElement>(null);
   const spayedNeuteredRef = useRef<HTMLSelectElement>(null);
+  const hasLeukemiaRef = useRef<HTMLSelectElement>(null);
   const medicalConditionsRef = useRef<HTMLTextAreaElement>(null);
   const dietaryNeedsRef = useRef<HTMLTextAreaElement>(null);
   const hasPassedAwayRef = useRef<HTMLSelectElement>(null);
@@ -78,9 +79,10 @@ export const CatEditPage = ({ isEditPage }: { isEditPage?: boolean }) => {
       breedId: Number(breedIdRef?.current?.value) || 0,
       birthDate: birthDateRef?.current?.value || '',
       spayedNeutered: Boolean(spayedNeuteredRef?.current?.value === 'true'),
-      medicalConditions: medicalConditionsRef?.current?.value || '',
+      hasLeukemia: hasLeukemiaRef?.current?.value === 'null' ? null : Boolean(hasLeukemiaRef?.current?.value === 'true'),
       dietaryNeeds: dietaryNeedsRef?.current?.value || '',
-      hasPassedAway: Boolean(hasPassedAwayRef?.current?.value === 'true'),
+      hasPassedAway: Boolean(hasPassedAwayRef.current?.value === 'true'),
+      medicalConditions: medicalConditionsRef?.current?.value || '',
       locationId: Number(selectedFormValues.locationId),
       clinicId: Number(clinicIdRef?.current?.value)
     };
@@ -175,6 +177,13 @@ export const CatEditPage = ({ isEditPage }: { isEditPage?: boolean }) => {
             isBooleanSelect={true}
             ref={spayedNeuteredRef}
             defaultValue={Boolean(selectedFormValues.spayedNeutered).toString()}
+          />
+          <SelectInput
+            name="leukemia"
+            label="FeLV (Leucemia Felina)"
+            isBooleanSelect={true}
+            ref={hasLeukemiaRef}
+            defaultValue={selectedFormValues.hasLeukemia === null ? 'null' : Boolean(selectedFormValues.hasLeukemia).toString()}
           />
           <SelectInput
             name="passed"
