@@ -15,11 +15,14 @@ const UseToast = () => {
 
   const toastSuccess = (message: string) => toast.success(message, options);
 
-  const toastError = (message: string) => toast.error(message, options);
+  const toastError = (message: string, opts?: ToastOptions) =>
+    toast.error(message, { ...options, ...opts });
 
-  const toastWarning = (message: string) => toast.warning(message, options);
+  const toastWarning = (message: string, opts?: ToastOptions) =>
+    toast.warning(message, { ...options, ...opts });
 
-  const toastInfo = (message: string) => toast.info(message, options);
+  const toastInfo = (message: string, opts?: ToastOptions) =>
+    toast.info(message, { ...options, ...opts });
 
   return { toastSuccess, toastError, toastWarning, toastInfo };
 };

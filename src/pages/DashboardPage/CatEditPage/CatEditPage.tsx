@@ -15,7 +15,7 @@ import UseToast from '@hooks/UseToast';
 import { environment } from '@consts/environments';
 import { FetchCatDataResult, useFetchCatData } from '@hooks/useFetchCatData';
 
-export const CatEditPage = () => {
+export const CatEditPage = ({ isEditPage }: { isEditPage?: boolean }) => {
   const { baseUrl } = environment;
   const { catId } = useParams();
   const { toastSuccess, toastError } = UseToast();
@@ -26,12 +26,11 @@ export const CatEditPage = () => {
 
   const { selectedFormValues, setSelectedFormValues } =
     useContext(CatEditFormContext);
-  const { loading, catData, error }: FetchCatDataResult = useFetchCatData(
-    catId,
-    baseUrl
-  );
-
-  console.log('===loading, error==>', loading, error);
+  const {
+    loading: fetchCatDataLoading,
+    catData,
+    error: fetchCatDataError
+  }: FetchCatDataResult = useFetchCatData(catId, baseUrl);
 
   const nameRef = useRef<HTMLInputElement>(null);
   const descriptionRef = useRef<HTMLInputElement>(null);
@@ -56,10 +55,10 @@ export const CatEditPage = () => {
   };
 
   useEffect(() => {
-    if (catData) {
+    if (catData && isEditPage) {
       setSelectedFormValues(catData);
     }
-  }, [catData, setSelectedFormValues]);
+  }, [catData, setSelectedFormValues, isEditPage]);
 
   const formData = UseFormSetupData();
   const selectedLocation = formData.locations.find(
@@ -109,7 +108,13 @@ export const CatEditPage = () => {
     }
   };
 
-  if (loading) {
+  if (fetchCatDataError) {
+    toastError(fetchCatDataError, {
+      toastId: 'fetchCatDataError'
+    });
+  }
+
+  if (fetchCatDataLoading && isEditPage) {
     return <div>Loading...</div>;
   }
 

@@ -29,7 +29,7 @@ function App() {
           path="gatos/:catId"
           element={
             <CatEditFormContextProvider>
-              <CatEditPage />
+              <CatEditPage isEditPage />
             </CatEditFormContextProvider>
           }
         />
