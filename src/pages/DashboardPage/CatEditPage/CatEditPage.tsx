@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect, ChangeEvent, useContext } from 'react';
+import { useRef, useState, useEffect, ChangeEvent, useContext, MouseEvent } from 'react';
 import { TextInput } from '@components/Inputs/TextInput/TextInput';
 import { SelectInput } from '@components/Inputs/SelectInput/SelectInput';
 import { DateInput } from '@components/Inputs/DateInput/DateInput';
@@ -47,7 +47,8 @@ export const CatEditPage = ({ isEditPage }: { isEditPage?: boolean }) => {
   const hasPassedAwayRef = useRef<HTMLSelectElement>(null);
   const clinicIdRef = useRef<HTMLInputElement>(null);
 
-  const openMapModal = () => {
+  const openMapModal = (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
     setModalOpen(true);
   };
 
