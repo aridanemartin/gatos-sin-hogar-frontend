@@ -26,6 +26,7 @@ export const SelectInput = forwardRef(function SelectInput(
   }: SelectInputProps,
   ref: Ref<HTMLSelectElement>
 ) {
+  if (name === 'leukemia') console.log(defaultValue, 'defaultValue');
   const [value, setValue] = useState(defaultValue);
 
   useEffect(() => {
@@ -42,10 +43,13 @@ export const SelectInput = forwardRef(function SelectInput(
     if (isBooleanSelect) {
       return (
         <>
-          <option value={'false'} key={0}>
+          <option value={'null'} key={0}>
+            Se desconoce
+          </option>
+          <option value={'false'} key={1}>
             No
           </option>
-          <option value={'true'} key={1}>
+          <option value={'true'} key={2}>
             Sí
           </option>
         </>

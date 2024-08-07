@@ -38,13 +38,14 @@ export const useFetchCatData = (
           picture: data?.picture || '',
           breedId: data?.breed_id,
           spayedNeutered: Boolean(data?.spayed_neutered),
+          hasLeukemia: data?.has_leukemia === null ? null : Boolean(data?.has_leukemia),
           medicalConditions: data?.medical_conditions || '',
           dietaryNeeds: data?.dietary_needs || '',
           hasPassedAway: Boolean(data?.has_passed_away),
           locationId: data?.location_id,
           clinicId: data?.clinic_id
         };
-
+        
         setCatData(updatedCatData);
         setLoading(false);
       } catch (error) {

@@ -3,7 +3,7 @@ import {
   CatLocationFormSchema
 } from '@interfaces/CatForm';
 import { LatLngLiteral } from 'leaflet';
-import { ChangeEvent, useContext, useEffect, useState } from 'react';
+import { ChangeEvent, useContext, useEffect, useState, MouseEvent } from 'react';
 import { environment } from '@consts/environments';
 import UseToast from '@hooks/UseToast';
 import { ZodError, typeToFlattenedError } from 'zod';
@@ -42,11 +42,12 @@ export const AddLocationForm = ({ coords }: { coords: LatLngLiteral }) => {
     });
   }
 
-  async function handleAddLocationFormSubmit() {
+  async function handleAddLocationFormSubmit(event: MouseEvent<HTMLButtonElement>) {
+    event.preventDefault();
     try {
       const validatedData = CatLocationFormSchema.parse(selectedLocation);
 
-      await fetch(`${baseUrl}/locations/`, {
+      await fetch(`${baseUrl}/locations`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
