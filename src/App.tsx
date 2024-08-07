@@ -8,6 +8,7 @@ import { NotFoundPage } from './pages/NotFoundPage/NotFoundPage';
 import { HomePage } from './pages/HomePage/HomePage';
 import { AdoptPage } from './pages/Adopt/Adopt';
 import './styles/global.scss';
+import './styles/globals.css';
 import { CatEditFormContextProvider } from '@contexts/CatFormContext';
 
 function App() {

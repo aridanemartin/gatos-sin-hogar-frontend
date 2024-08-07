@@ -20,6 +20,12 @@ export const useFetchCatData = (
     const fetchData = async () => {
       try {
         const res = await fetch(`${baseUrl}/cats/${catId}`);
+
+        if (!res.ok) {
+          setError('Error al cargar los datos del gato.');
+          setLoading(false);
+          return;
+        }
         const data = CatApiFormSchema.parse(await res.json());
 
         const updatedCatData: CatFormFields = {

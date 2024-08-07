@@ -33,6 +33,10 @@ export default defineConfig({
       {
         find: '@consts',
         replacement: path.resolve(__dirname, 'src/consts')
+      },
+      {
+        find: '@assets',
+        replacement: path.resolve(__dirname, 'src/assets')
       }
     ]
   }

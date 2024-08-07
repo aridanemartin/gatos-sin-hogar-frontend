@@ -14,6 +14,7 @@ import { ZodError, typeToFlattenedError } from 'zod';
 import UseToast from '@hooks/UseToast';
 import { environment } from '@consts/environments';
 import { FetchCatDataResult, useFetchCatData } from '@hooks/useFetchCatData';
+import { FileInput } from '@components/Inputs/FileInput/FileInput';
 
 export const CatEditPage = ({ isEditPage }: { isEditPage?: boolean }) => {
   const { baseUrl } = environment;
@@ -45,6 +46,13 @@ export const CatEditPage = ({ isEditPage }: { isEditPage?: boolean }) => {
   const dietaryNeedsRef = useRef<HTMLTextAreaElement>(null);
   const hasPassedAwayRef = useRef<HTMLSelectElement>(null);
   const clinicIdRef = useRef<HTMLInputElement>(null);
+  const catImageRef = useRef<HTMLInputElement>(null);
+
+  const handleResetImage = () => {
+    if (catImageRef?.current) {
+      catImageRef.current.value = '';
+    }
+  };
 
   const openMapModal = () => {
     setModalOpen(true);
@@ -112,6 +120,7 @@ export const CatEditPage = ({ isEditPage }: { isEditPage?: boolean }) => {
     toastError(fetchCatDataError, {
       toastId: 'fetchCatDataError'
     });
+    return <p>Algo ha sucedido</p>;
   }
 
   if (fetchCatDataLoading && isEditPage) {
@@ -235,15 +244,11 @@ export const CatEditPage = ({ isEditPage }: { isEditPage?: boolean }) => {
           locationId, clinicId and picture */}
       </section>
       <section className="catPage__imageSection">
-        <TextInput
-          name="picture"
-          label="Foto"
-          ref={pictureRef}
-          placeholder="Imagen del gato"
-          defaultValue={selectedFormValues.picture}
-          error={
-            errors?.fieldErrors?.picture && errors?.fieldErrors?.picture[0]
-          }
+        <FileInput
+          name="catPicture"
+          label="Cat Picture"
+          ref={catImageRef}
+          onReset={handleResetImage}
         />
       </section>
       <section className="catPage__locationSection">

@@ -1,9 +1,11 @@
-import "./HomePage.scss";
+import { TestimonialsSlider } from '@components/TestimonialsSlider/TestimonialsSlider';
+import './HomePage.scss';
+import { slides } from '@components/TestimonialsSlider/testimonialData';
 
 export const HomePage = () => {
   return (
     <div>
-      <p>buenos dias</p>
+      <TestimonialsSlider slides={slides} />
     </div>
   );
 };

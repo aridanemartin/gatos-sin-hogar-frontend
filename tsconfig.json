@@ -28,7 +28,8 @@
       "@helpers/*": ["./src/helpers/*"],
       "@interfaces/*": ["./src/interfaces/*"],
       "@contexts/*": ["./src/contexts/*"],
-      "@consts/*": ["./src/consts/*"]
+      "@consts/*": ["./src/consts/*"],
+      "@assets/*": ["./src/assets/*"]
     }
   },
   "include": ["src"],
