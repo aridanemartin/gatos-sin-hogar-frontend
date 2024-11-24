@@ -1,7 +1,12 @@
-import { useRef, useState, useEffect, ChangeEvent, useContext, MouseEvent } from 'react';
+import {
+  useRef,
+  useState,
+  useEffect,
+  ChangeEvent,
+  useContext,
+  MouseEvent
+} from 'react';
 import { TextInput } from '@components/Inputs/TextInput/TextInput';
-import { SelectInput } from '@components/Inputs/SelectInput/SelectInput';
-import { DateInput } from '@components/Inputs/DateInput/DateInput';
 import { TextAreaInput } from '@components/Inputs/TextAreaInput/TextAreaInput';
 import { useParams } from 'react-router-dom';
 import { UseFormSetupData } from '@hooks/UseFormSetupData';
@@ -14,7 +19,8 @@ import { ZodError, typeToFlattenedError } from 'zod';
 import UseToast from '@hooks/UseToast';
 import { environment } from '@consts/environments';
 import { FetchCatDataResult, useFetchCatData } from '@hooks/useFetchCatData';
-import { FileInput } from '@components/Inputs/FileInput/FileInput';
+import { GeneralInformationSection } from './sections/GeneralInformationSection/GeneralInformationSection';
+import { AboutCatSection } from './sections/AboutCatSection/AboutCatSection';
 
 export const CatEditPage = ({ isEditPage }: { isEditPage?: boolean }) => {
   const { baseUrl } = environment;
@@ -88,7 +94,10 @@ export const CatEditPage = ({ isEditPage }: { isEditPage?: boolean }) => {
       breedId: Number(breedIdRef?.current?.value) || 0,
       birthDate: birthDateRef?.current?.value || '',
       spayedNeutered: Boolean(spayedNeuteredRef?.current?.value === 'true'),
-      hasLeukemia: hasLeukemiaRef?.current?.value === 'null' ? null : Boolean(hasLeukemiaRef?.current?.value === 'true'),
+      hasLeukemia:
+        hasLeukemiaRef?.current?.value === 'null'
+          ? null
+          : Boolean(hasLeukemiaRef?.current?.value === 'true'),
       dietaryNeeds: dietaryNeedsRef?.current?.value || '',
       hasPassedAway: Boolean(hasPassedAwayRef.current?.value === 'true'),
       medicalConditions: medicalConditionsRef?.current?.value || '',
@@ -132,16 +141,7 @@ export const CatEditPage = ({ isEditPage }: { isEditPage?: boolean }) => {
 
   return (
     <form onSubmit={handleCatFormSubmit} className="catPage__form">
-      <section className="catPage__header">
-        <TextInput
-          name="name"
-          label="Nombre"
-          ref={nameRef}
-          placeholder="Nombre"
-          defaultValue={selectedFormValues.name}
-          error={errors?.fieldErrors?.name && errors?.fieldErrors?.name[0]}
-        />
-      </section>
+      <section className="catPage__header"></section>
       <section className="catPage__buttonsSection">
         <button className="button button-cancel">Cancelar</button>
         <button className="button button-save" type="submit">
@@ -150,89 +150,27 @@ export const CatEditPage = ({ isEditPage }: { isEditPage?: boolean }) => {
         </button>
       </section>
 
-      <section className="catPage__generalInformationSection">
-        <h2>Información General</h2>
-        <div className="catPage__generalInformationInputs">
-          <SelectInput
-            name="gender"
-            label="Género"
-            options={formData.genders}
-            ref={genderRef}
-            defaultValue={selectedFormValues.gender as unknown as string}
-          />
-          <SelectInput
-            name="chip"
-            label="Chip"
-            isBooleanSelect={true}
-            ref={hasChipRef}
-            defaultValue={Boolean(selectedFormValues.hasChip).toString()}
-          />
-          <SelectInput
-            name="breed"
-            label="Raza"
-            hasEnumeratedOptions={true}
-            options={formData.breeds}
-            ref={breedIdRef}
-          />
-          <DateInput
-            name="birth_date"
-            label="Fecha de nacimiento"
-            ref={birthDateRef}
-            defaultValue={selectedFormValues.birthDate}
-            // error={errors?.fieldErrors?.birthDate[0]}
-          />
-          <SelectInput
-            name="spayed"
-            label="Castrado/Esterilizado"
-            isBooleanSelect={true}
-            ref={spayedNeuteredRef}
-            defaultValue={Boolean(selectedFormValues.spayedNeutered).toString()}
-          />
-          <SelectInput
-            name="leukemia"
-            label="FeLV (Leucemia Felina)"
-            isBooleanSelect={true}
-            ref={hasLeukemiaRef}
-            defaultValue={selectedFormValues.hasLeukemia === null ? 'null' : Boolean(selectedFormValues.hasLeukemia).toString()}
-          />
-          <SelectInput
-            name="passed"
-            label="Ha Fallecido"
-            isBooleanSelect={true}
-            ref={hasPassedAwayRef}
-            defaultValue={Boolean(selectedFormValues.hasPassedAway).toString()}
-          />
-        </div>
-      </section>
-      <section className="catPage__aboutSection">
-        <h2>
-          {selectedFormValues?.name
-            ? `Sobre ${selectedFormValues.name}:`
-            : 'Sobre el/la gato/a:'}
-        </h2>
-        <TextInput
-          name="description"
-          label="Descripción"
-          ref={descriptionRef}
-          placeholder="Descripción"
-          defaultValue={selectedFormValues.description}
-          error={
-            errors?.fieldErrors?.description &&
-            errors?.fieldErrors?.description[0]
-          }
-        />
-        <TextInput
-          name="personality"
-          label="Personalidad"
-          ref={personalityRef}
-          placeholder="Personalidad"
-          defaultValue={selectedFormValues.personality}
-          error={
-            errors?.fieldErrors?.personality &&
-            errors?.fieldErrors?.personality[0]
-          }
-        />
-      </section>
+      <GeneralInformationSection
+        nameRef={nameRef}
+        genderRef={genderRef}
+        hasChipRef={hasChipRef}
+        breedIdRef={breedIdRef}
+        birthDateRef={birthDateRef}
+        spayedNeuteredRef={spayedNeuteredRef}
+        hasLeukemiaRef={hasLeukemiaRef}
+        catImageRef={catImageRef}
+        hasPassedAwayRef={hasPassedAwayRef}
+        selectedFormValues={selectedFormValues}
+        handleResetImage={handleResetImage}
+        formData={formData}
+        errors={errors}
+      />
+      <AboutCatSection
+        descriptionRef={descriptionRef}
+        personalityRef={personalityRef}
+        selectedFormValues={selectedFormValues}
+        errors={errors}
+      />
 
       <section className="catPage__healthRecordsSection">
         <h2>Historial Médico:</h2>
@@ -253,14 +191,7 @@ export const CatEditPage = ({ isEditPage }: { isEditPage?: boolean }) => {
         {/* TODO: This inputs are set temporary. Remember to change it for the real
           locationId, clinicId and picture */}
       </section>
-      <section className="catPage__imageSection">
-        <FileInput
-          name="catPicture"
-          label="Cat Picture"
-          ref={catImageRef}
-          onReset={handleResetImage}
-        />
-      </section>
+
       <section className="catPage__locationSection">
         <h2>Localización:</h2>
         {selectedLocation?.name ?? 'Localización desconocida'}
