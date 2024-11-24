@@ -26,26 +26,43 @@ export const useFetchCatData = (
           setLoading(false);
           return;
         }
-        const data = CatApiFormSchema.parse(await res.json());
+
+        const {
+          name,
+          gender,
+          birth_date,
+          description,
+          personality,
+          has_chip,
+          picture,
+          breed_id,
+          spayed_neutered,
+          has_leukemia,
+          medical_conditions,
+          dietary_needs,
+          has_passed_away,
+          location_id,
+          clinic_id
+        } = CatApiFormSchema.parse(await res.json());
 
         const updatedCatData: CatFormFields = {
-          name: data?.name || '',
-          gender: data?.gender || 'UNKNOWN',
-          birthDate: data?.birth_date || '',
-          description: data?.description || '',
-          personality: data?.personality || '',
-          hasChip: Boolean(data?.has_chip),
-          picture: data?.picture || '',
-          breedId: data?.breed_id,
-          spayedNeutered: Boolean(data?.spayed_neutered),
-          hasLeukemia: data?.has_leukemia === null ? null : Boolean(data?.has_leukemia),
-          medicalConditions: data?.medical_conditions || '',
-          dietaryNeeds: data?.dietary_needs || '',
-          hasPassedAway: Boolean(data?.has_passed_away),
-          locationId: data?.location_id,
-          clinicId: data?.clinic_id
+          name: name || '',
+          gender: gender || 'UNKNOWN',
+          birthDate: birth_date || '',
+          description: description || '',
+          personality: personality || '',
+          hasChip: Boolean(has_chip),
+          picture: picture || '',
+          breedId: breed_id,
+          spayedNeutered: Boolean(spayed_neutered),
+          hasLeukemia: has_leukemia === null ? null : Boolean(has_leukemia),
+          medicalConditions: medical_conditions || '',
+          dietaryNeeds: dietary_needs || '',
+          hasPassedAway: Boolean(has_passed_away),
+          locationId: location_id,
+          clinicId: clinic_id
         };
-        
+
         setCatData(updatedCatData);
         setLoading(false);
       } catch (error) {

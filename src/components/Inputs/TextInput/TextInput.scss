@@ -2,4 +2,8 @@
 
 .textInput {
   @include formInputStyles;
+
+  &__fullWidth {
+    width: 100%;
+  }
 }

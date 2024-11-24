@@ -10,38 +10,41 @@ import { AdoptPage } from './pages/Adopt/Adopt';
 import './styles/global.scss';
 import './styles/globals.css';
 import { CatEditFormContextProvider } from '@contexts/CatFormContext';
+import MainLayout from './layouts/MainLayout';
 
 function App() {
   return (
     <Routes>
-      <Route index element={<HomePage />} />
-      <Route path="dashboard">
-        <Route index element={<DashboardPage />} />
+      <Route path="/" element={<MainLayout />}>
+        <Route index element={<HomePage />} />
+        <Route path="dashboard">
+          <Route index element={<DashboardPage />} />
 
-        <Route
-          path="gatos"
-          element={
-            <CatEditFormContextProvider>
-              <CatEditPage />
-            </CatEditFormContextProvider>
-          }
-        />
-        <Route
-          path="gatos/:catId"
-          element={
-            <CatEditFormContextProvider>
-              <CatEditPage isEditPage />
-            </CatEditFormContextProvider>
-          }
-        />
+          <Route
+            path="gatos"
+            element={
+              <CatEditFormContextProvider>
+                <CatEditPage />
+              </CatEditFormContextProvider>
+            }
+          />
+          <Route
+            path="gatos/:catId"
+            element={
+              <CatEditFormContextProvider>
+                <CatEditPage isEditPage />
+              </CatEditFormContextProvider>
+            }
+          />
 
-        <Route path="voluntarios" element={<VolunteerEditPage />} />
-        <Route path="vacunas" element={<VaccineEditPage />} />
-        <Route path="tareas" element={<TaskEditPage />} />
+          <Route path="voluntarios" element={<VolunteerEditPage />} />
+          <Route path="vacunas" element={<VaccineEditPage />} />
+          <Route path="tareas" element={<TaskEditPage />} />
+        </Route>
+
+        <Route path="adopta" element={<AdoptPage />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Route>
-
-      <Route path="adopta" element={<AdoptPage />} />
-      <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
 }

@@ -7,10 +7,18 @@ interface TextInputProps {
   placeholder?: string;
   defaultValue?: string;
   error?: string;
+  isFullWidth?: boolean;
 }
 
 export const TextInput = forwardRef(function TextInput(
-  { name, label, placeholder, defaultValue = '', error }: TextInputProps,
+  {
+    name,
+    label,
+    placeholder,
+    defaultValue = '',
+    error,
+    isFullWidth
+  }: TextInputProps,
   ref: Ref<HTMLInputElement>
 ) {
   const [value, setValue] = useState(defaultValue);
@@ -25,7 +33,7 @@ export const TextInput = forwardRef(function TextInput(
   };
 
   return (
-    <div className="textInput">
+    <div className={`textInput ${isFullWidth ? 'textInput__fullWidth' : ''}`}>
       <label htmlFor={name}>{label}</label>
       <input
         name={name}
