@@ -1,0 +1,47 @@
+.mainLayout {
+  &__nav {
+    display: flex;
+    padding: 1rem;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--main-blue);
+  }
+
+  &__navLinks {
+    display: flex;
+    gap: 4rem;
+    align-items: center;
+
+    ul {
+      display: flex;
+      gap: 4rem;
+    }
+
+    a {
+      text-decoration: none;
+      color: var(--main-blue);
+    }
+  }
+
+  &__footer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 10rem;
+    gap: 1rem;
+    background-color: var(--main-blue);
+  }
+
+  &__footerSocials {
+    display: flex;
+    gap: 1rem;
+
+    a {
+      filter: invert(1);
+    }
+  }
+
+  &__copy {
+    color: white;
+  }
+}

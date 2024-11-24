@@ -12,12 +12,14 @@
   input,
   select,
   textarea {
+    height: 48px;
     border: 1px solid gray;
     border-radius: 0.5rem;
     font-size: 1rem;
     font-weight: 400;
     margin-bottom: 1rem;
-    width: 100%;
+    width: -webkit-fill-available;
+    padding: 0 1rem;
 
     &:focus {
       outline: none;
