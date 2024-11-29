@@ -44,7 +44,7 @@ export const GeneralInformationSection = ({
       <div className="generalInformationInputs">
         <div className="generalInformationInputs__imageInput">
           <FileInput
-            name="catPicture"
+            name="picture"
             label="Cat Picture"
             ref={catImageRef}
             onReset={handleResetImage}

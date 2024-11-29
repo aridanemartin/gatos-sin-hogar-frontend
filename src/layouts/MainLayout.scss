@@ -22,6 +22,10 @@
     }
   }
 
+  &__children {
+    min-height: calc(100vh - 10rem);
+  }
+
   &__footer {
     display: flex;
     flex-direction: column;

@@ -5,7 +5,7 @@ import { Button, ButtonType } from '@components/Button/Button';
 
 const MainLayout = () => {
   return (
-    <div>
+    <div className="mainLayout">
       <header>
         <nav className="mainLayout__nav">
           <img src={gatosSinHogarNavLogo} alt="" height={55} />
@@ -32,7 +32,7 @@ const MainLayout = () => {
           </div>
         </nav>
       </header>
-      <main>
+      <main className="mainLayout__children">
         <Outlet />
       </main>
       <footer className="mainLayout__footer">

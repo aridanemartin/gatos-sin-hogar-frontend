@@ -44,7 +44,7 @@ export const CatEditPage = ({ isEditPage }: { isEditPage?: boolean }) => {
   const personalityRef = useRef<HTMLInputElement>(null);
   const genderRef = useRef<HTMLSelectElement>(null);
   const hasChipRef = useRef<HTMLSelectElement>(null);
-  const pictureRef = useRef<HTMLInputElement>(null);
+  // const pictureRef = useRef<HTMLInputElement>(null);
   const breedIdRef = useRef<HTMLSelectElement>(null);
   const birthDateRef = useRef<HTMLInputElement>(null);
   const spayedNeuteredRef = useRef<HTMLSelectElement>(null);
@@ -90,7 +90,7 @@ export const CatEditPage = ({ isEditPage }: { isEditPage?: boolean }) => {
       personality: personalityRef?.current?.value || '',
       gender: (genderRef?.current?.value as GenderType) || 'UNKNOWN',
       hasChip: Boolean(hasChipRef?.current?.value === 'true'),
-      picture: pictureRef?.current?.value || '',
+      picture: catImageRef?.current?.value || '',
       breedId: Number(breedIdRef?.current?.value) || 0,
       birthDate: birthDateRef?.current?.value || '',
       spayedNeutered: Boolean(spayedNeuteredRef?.current?.value === 'true'),
@@ -115,6 +115,39 @@ export const CatEditPage = ({ isEditPage }: { isEditPage?: boolean }) => {
         },
         body: JSON.stringify(validatedData)
       });
+
+      // const handleSubmit = async (event) => {
+      //   event.preventDefault();
+
+      //   const formData = new FormData();
+      //   formData.append('picture', catImageRef.current.files[0]);
+
+      //   try {
+      //     const response = await fetch(`/upload-image/${catId}`, {
+      //       method: 'POST',
+      //       body: formData
+      //     });
+
+      //     if (!response.ok) {
+      //       throw new Error('Error uploading image');
+      //     }
+
+      //     const data = await response.json();
+      //     console.log('Image uploaded successfully:', data);
+      //   } catch (error) {
+      //     console.error('Error:', error);
+      //   }
+      // };
+
+      if (formFields.picture) {
+        const formData = new FormData();
+        formData.append('picture', catImageRef?.current?.files[0]);
+
+        await fetch(`${baseUrl}/cats/upload-image/${catId}`, {
+          method: 'POST',
+          body: formData
+        });
+      }
 
       toastSuccess('Gato guardado con éxito');
     } catch (error) {
