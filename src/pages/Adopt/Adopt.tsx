@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react';
-import { ProfileCard } from '../../components/ProfileCard/ProfileCard';
+import { ImageGallery } from '@components/ImageGallery/ImageGallery';
+import { Title } from '@components/Title/Title';
+import './Adopt.scss';
+import { TitleVariant } from '@components/Title/Title.types';
 
 interface Cat {
   id: number;
@@ -33,7 +36,7 @@ interface Pagination {
 export const AdoptPage = () => {
   const [cats, setCats] = useState<Cat[]>([]);
   const [pagination, setPagination] = useState<Pagination>({
-    itemsPerPage: 11,
+    itemsPerPage: 10,
     totalCount: 1,
     totalPages: 1,
     currentPage: 1
@@ -72,13 +75,11 @@ export const AdoptPage = () => {
   }
 
   return (
-    <div>
+    <div className="adoptPage">
+      <Title variant={TitleVariant.H1}>Conoce a nuestros gatos</Title>
+      <ImageGallery items={cats} />
       <button onClick={fetchPrevPage}>Prev Page</button>
       <button onClick={fetchNextPage}>Next Page</button>
-      <h1>AdoptPage</h1>
-      {cats.map((cat) => {
-        return <ProfileCard key={cat.id} name={cat.name} />;
-      })}
     </div>
   );
 };

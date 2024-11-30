@@ -8,7 +8,7 @@ import {
 } from 'react';
 import { TextInput } from '@components/Inputs/TextInput/TextInput';
 import { TextAreaInput } from '@components/Inputs/TextAreaInput/TextAreaInput';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { UseFormSetupData } from '@hooks/UseFormSetupData';
 import { CatFormFields, CatFormSchema, GenderType } from '@interfaces/CatForm';
 import { MapModal } from '@components/MapModal/MapModal';
@@ -44,7 +44,6 @@ export const CatEditPage = ({ isEditPage }: { isEditPage?: boolean }) => {
   const personalityRef = useRef<HTMLInputElement>(null);
   const genderRef = useRef<HTMLSelectElement>(null);
   const hasChipRef = useRef<HTMLSelectElement>(null);
-  // const pictureRef = useRef<HTMLInputElement>(null);
   const breedIdRef = useRef<HTMLSelectElement>(null);
   const birthDateRef = useRef<HTMLInputElement>(null);
   const spayedNeuteredRef = useRef<HTMLSelectElement>(null);
@@ -116,30 +115,7 @@ export const CatEditPage = ({ isEditPage }: { isEditPage?: boolean }) => {
         body: JSON.stringify(validatedData)
       });
 
-      // const handleSubmit = async (event) => {
-      //   event.preventDefault();
-
-      //   const formData = new FormData();
-      //   formData.append('picture', catImageRef.current.files[0]);
-
-      //   try {
-      //     const response = await fetch(`/upload-image/${catId}`, {
-      //       method: 'POST',
-      //       body: formData
-      //     });
-
-      //     if (!response.ok) {
-      //       throw new Error('Error uploading image');
-      //     }
-
-      //     const data = await response.json();
-      //     console.log('Image uploaded successfully:', data);
-      //   } catch (error) {
-      //     console.error('Error:', error);
-      //   }
-      // };
-
-      if (formFields.picture) {
+      if (catImageRef?.current?.files && catImageRef.current.files[0]) {
         const formData = new FormData();
         formData.append('picture', catImageRef?.current?.files[0]);
 
@@ -173,78 +149,84 @@ export const CatEditPage = ({ isEditPage }: { isEditPage?: boolean }) => {
   }
 
   return (
-    <form onSubmit={handleCatFormSubmit} className="catPage__form">
-      <section className="catPage__header"></section>
-      <section className="catPage__buttonsSection">
-        <button className="button button-cancel">Cancelar</button>
-        <button className="button button-save" type="submit">
-          {' '}
-          Guardar Cambios{' '}
-        </button>
-      </section>
+    <>
+      <Link to="/dashboard" className="catPage__backLink">
+        Volver
+      </Link>
+      <h1>Editar Gato</h1>
+      <form onSubmit={handleCatFormSubmit} className="catPage__form">
+        <section className="catPage__header"></section>
+        <section className="catPage__buttonsSection">
+          <button className="button button-cancel">Cancelar</button>
+          <button className="button button-save" type="submit">
+            {' '}
+            Guardar Cambios{' '}
+          </button>
+        </section>
 
-      <GeneralInformationSection
-        nameRef={nameRef}
-        genderRef={genderRef}
-        hasChipRef={hasChipRef}
-        breedIdRef={breedIdRef}
-        birthDateRef={birthDateRef}
-        spayedNeuteredRef={spayedNeuteredRef}
-        hasLeukemiaRef={hasLeukemiaRef}
-        catImageRef={catImageRef}
-        hasPassedAwayRef={hasPassedAwayRef}
-        selectedFormValues={selectedFormValues}
-        handleResetImage={handleResetImage}
-        formData={formData}
-        errors={errors}
-      />
-      <AboutCatSection
-        descriptionRef={descriptionRef}
-        personalityRef={personalityRef}
-        selectedFormValues={selectedFormValues}
-        errors={errors}
-      />
+        <GeneralInformationSection
+          nameRef={nameRef}
+          genderRef={genderRef}
+          hasChipRef={hasChipRef}
+          breedIdRef={breedIdRef}
+          birthDateRef={birthDateRef}
+          spayedNeuteredRef={spayedNeuteredRef}
+          hasLeukemiaRef={hasLeukemiaRef}
+          catImageRef={catImageRef}
+          hasPassedAwayRef={hasPassedAwayRef}
+          selectedFormValues={selectedFormValues}
+          handleResetImage={handleResetImage}
+          formData={formData}
+          errors={errors}
+        />
+        <AboutCatSection
+          descriptionRef={descriptionRef}
+          personalityRef={personalityRef}
+          selectedFormValues={selectedFormValues}
+          errors={errors}
+        />
 
-      <section className="catPage__healthRecordsSection">
-        <h2>Historial Médico:</h2>
-        <TextAreaInput
-          name="dietary_needs"
-          label="Dieta Específica"
-          placeholder="Dieta Específica"
-          ref={dietaryNeedsRef}
-          defaultValue={selectedFormValues.dietaryNeeds}
-        />
-        <TextAreaInput
-          name="medical_conditions"
-          label="Condiciones Médicas"
-          placeholder="Condiciones Médicas"
-          ref={medicalConditionsRef}
-          defaultValue={selectedFormValues.medicalConditions}
-        />
-        {/* TODO: This inputs are set temporary. Remember to change it for the real
-          locationId, clinicId and picture */}
-      </section>
-
-      <section className="catPage__locationSection">
-        <h2>Localización:</h2>
-        {selectedLocation?.name ?? 'Localización desconocida'}
-        <TextInput
-          name="clinicId"
-          label="Clínica Asignada"
-          ref={clinicIdRef}
-          placeholder="Clínica Asignada"
-          // defaultValue={formValues?.clinicId ?? ''}
-        />
-        {modalOpen && (
-          <MapModal
-            catId={catId}
-            catLocationId={selectedFormValues.locationId}
-            locations={formData.locations}
-            closeModal={closeMapModal}
+        <section className="catPage__healthRecordsSection">
+          <h2>Historial Médico:</h2>
+          <TextAreaInput
+            name="dietary_needs"
+            label="Dieta Específica"
+            placeholder="Dieta Específica"
+            ref={dietaryNeedsRef}
+            defaultValue={selectedFormValues.dietaryNeeds}
           />
-        )}
-        <button onClick={openMapModal}>Abrir Mapa</button>
-      </section>
-    </form>
+          <TextAreaInput
+            name="medical_conditions"
+            label="Condiciones Médicas"
+            placeholder="Condiciones Médicas"
+            ref={medicalConditionsRef}
+            defaultValue={selectedFormValues.medicalConditions}
+          />
+          {/* TODO: This inputs are set temporary. Remember to change it for the real
+          locationId, clinicId and picture */}
+        </section>
+
+        <section className="catPage__locationSection">
+          <h2>Localización:</h2>
+          {selectedLocation?.name ?? 'Localización desconocida'}
+          <TextInput
+            name="clinicId"
+            label="Clínica Asignada"
+            ref={clinicIdRef}
+            placeholder="Clínica Asignada"
+            // defaultValue={formValues?.clinicId ?? ''}
+          />
+          {modalOpen && (
+            <MapModal
+              catId={catId}
+              catLocationId={selectedFormValues.locationId}
+              locations={formData.locations}
+              closeModal={closeMapModal}
+            />
+          )}
+          <button onClick={openMapModal}>Abrir Mapa</button>
+        </section>
+      </form>
+    </>
   );
 };

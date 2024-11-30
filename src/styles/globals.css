@@ -3,10 +3,25 @@
 :root {
   --roboto-font: 'Roboto', sans-serif;
 
+  /* Colors */
   --gray: #7b7a92;
   --dark-gray: #444360;
-
+  --soft-gray: #d9d9d9;
   --main-blue: #29293b;
+
+  /* Spacing */
+  --between-input-sections: 50px;
+  --section-spacing-m: 1rem;
+  --desktop-default-title-padding: 1rem;
+  --desktop-default-padding: 3rem;
+
+  /* Font sizes */
+  --font-size-xxl: 2.5rem;
+  --font-size-xl: 2rem;
+  --font-size-l: 1.5rem;
+  --font-size-m: 1.25rem;
+  --font-size-s: 1rem;
+  --font-size-xs: 0.75rem;
 }
 
 body {

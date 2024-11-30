@@ -4,10 +4,7 @@
 
 .generalInformationInputs {
   display: flex;
-
-  &__imageInput {
-    background-color: #f5f5f5;
-  }
+  gap: var(--between-input-sections);
 
   &__textInputs {
     padding: 1rem;

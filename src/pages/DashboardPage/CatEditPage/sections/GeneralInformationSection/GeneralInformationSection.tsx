@@ -5,7 +5,7 @@ import React from 'react';
 import './GeneralInformationSection.scss';
 import { CatFormData, CatFormFields } from '@interfaces/CatForm';
 import { typeToFlattenedError } from 'zod';
-import { FileInput } from '@components/Inputs/FileInput/FileInput';
+import { ImageInput } from '@components/Inputs/FileInput/ImageInput';
 
 interface GeneralInformationProps {
   nameRef: React.MutableRefObject<HTMLInputElement | null>;
@@ -43,9 +43,10 @@ export const GeneralInformationSection = ({
       <h2>Información General</h2>
       <div className="generalInformationInputs">
         <div className="generalInformationInputs__imageInput">
-          <FileInput
+          <ImageInput
             name="picture"
-            label="Cat Picture"
+            label="Foto: "
+            defaultImage={selectedFormValues.picture}
             ref={catImageRef}
             onReset={handleResetImage}
           />

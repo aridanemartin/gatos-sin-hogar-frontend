@@ -4,7 +4,11 @@
     display: grid;
     grid-template-areas: 'header header buttons' 'general general location' 'about about about' 'health health incident';
     grid-template-columns: 1fr 1fr auto;
+    border: 1px solid var(--soft-gray);
+    border-radius: 12px;
+    column-gap: var(--between-input-sections);
     row-gap: 60px;
+    margin-bottom: var(--section-spacing-m);
 
     h2 {
       position: inline-block;
