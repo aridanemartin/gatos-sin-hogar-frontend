@@ -1,0 +1,30 @@
+.imageInput {
+  &__preview {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--soft-gray);
+
+    height: 250px;
+    width: 250px;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+  }
+
+  &__input {
+    input {
+      display: none;
+    }
+
+    label {
+      display: flex;
+      justify-content: flex-start;
+      padding: 1rem 0;
+      text-decoration: underline;
+    }
+  }
+}
