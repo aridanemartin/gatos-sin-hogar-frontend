@@ -1,4 +1,4 @@
-import { Link, Outlet } from 'react-router-dom';
+import { Link, NavLink, Outlet } from 'react-router-dom';
 import './MainLayout.scss';
 import gatosSinHogarNavLogo from '@assets/logos/navLogo.png';
 import { Button, ButtonType } from '@components/Button/Button';
@@ -12,16 +12,16 @@ const MainLayout = () => {
           <div className="mainLayout__navLinks">
             <ul>
               <li>
-                <Link to="/adopta">Adopta</Link>
+                <NavLink to="/adopta">Adopta</NavLink>
               </li>
               <li>
-                <Link to="/voluntarios">Voluntariado</Link>
+                <NavLink to="/voluntarios">Voluntariado</NavLink>
               </li>
               <li>
-                <Link to="/dona">Dona</Link>
+                <NavLink to="/dona">Dona</NavLink>
               </li>
               <li>
-                <Link to="/sobre-nosotros">Sobre nosotros</Link>
+                <NavLink to="/sobre-nosotros">Sobre nosotros</NavLink>
               </li>
             </ul>
             <Button

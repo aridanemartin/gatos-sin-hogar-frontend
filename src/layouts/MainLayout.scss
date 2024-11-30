@@ -24,6 +24,8 @@
 
   &__children {
     min-height: calc(100vh - 10rem);
+    max-width: 1440px;
+    margin: 0 auto;
   }
 
   &__footer {
