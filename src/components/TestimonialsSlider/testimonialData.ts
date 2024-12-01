@@ -1,5 +1,6 @@
 import yolanda from '@assets/pictures/testimonials/yolanda.webp';
 import doramas from '@assets/pictures/testimonials/doramas.webp';
+import nazia from '@assets/pictures/testimonials/nazia.webp';
 import quotes from '@assets/icons/quotes.png';
 
 export interface TestimonialsContent {
@@ -96,13 +97,13 @@ export const slides: TestimonialsContent[] = [
       contentClass: 'content',
       image: {
         className: 'image',
-        src: `${yolanda}`,
+        src: `${nazia}`,
         alt: ''
       },
       textContent: {
         heading:
-          'Porque dar es recibir. Y porque recibimos más de lo que damos. No son sólo gatos, son parte de la familia de Gatos sin Hogar.',
-        personName: "person's name"
+          'Si tú también amas a los animales y quieres colaborar de alguna forma, te animo a unirte. Es de las decisiones más bonitas que he tomado.',
+        personName: 'Nazia'
       },
       link: {
         className: 'link',
