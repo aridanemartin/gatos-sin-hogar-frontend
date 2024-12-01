@@ -10,10 +10,17 @@ import 'leaflet/dist/leaflet.css';
 interface MapProps {
   mapPosition: LatLngExpression;
   handleMapPosition: (coords: LatLngExpression) => void;
+  isMarkerDraggable?: boolean;
+  styles?: React.CSSProperties;
 }
 
 export const Map = forwardRef(function Map(
-  { mapPosition, handleMapPosition }: MapProps,
+  {
+    mapPosition,
+    handleMapPosition,
+    isMarkerDraggable = true,
+    styles = { height: '35%', width: '100%' }
+  }: MapProps,
   ref: Ref<LeafletMapType>
 ) {
   const markerRef = useRef<MarkerType>(null);
@@ -33,14 +40,14 @@ export const Map = forwardRef(function Map(
       center={mapPosition}
       zoom={15}
       preferCanvas
-      style={{ height: '35%', width: '100%' }}
+      style={styles}
       ref={ref}
     >
       <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
       <Marker
         ref={markerRef}
         position={mapPosition}
-        draggable
+        draggable={isMarkerDraggable}
         eventHandlers={eventHandlers}
       />
     </MapContainer>

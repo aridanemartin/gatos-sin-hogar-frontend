@@ -7,12 +7,12 @@ import 'react-toastify/dist/ReactToastify.css';
 import { EventsProvider } from '@contexts/EventsContext';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <EventsProvider>
-      <BrowserRouter>
-        <App />
-        <ToastContainer />
-      </BrowserRouter>
-    </EventsProvider>
-  </React.StrictMode>
+  // <React.StrictMode>
+  <EventsProvider>
+    <BrowserRouter>
+      <App />
+      <ToastContainer />
+    </BrowserRouter>
+  </EventsProvider>
+  // </React.StrictMode>
 );

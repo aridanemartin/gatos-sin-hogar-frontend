@@ -73,7 +73,7 @@ export const CatFormSchema = z.object({
   dietaryNeeds: z.string().optional(),
   hasPassedAway: z.boolean().nullish(),
   locationId: z.number().nullable(),
-  clinicId: z.number().nullable()
+  clinicId: z.number().nullish()
 });
 
 export const CatApiFormSchema = z.object({

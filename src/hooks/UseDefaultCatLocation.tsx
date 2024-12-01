@@ -40,7 +40,7 @@ export const UseDefaultCatLocation = (
       let defaultCatLocation;
       if (catLocationId) {
         fetchCatLocation();
-      } else if (dbLocations[0].x_coord && dbLocations[0].y_coord) {
+      } else if (dbLocations[0]?.x_coord && dbLocations[0]?.y_coord) {
         defaultCatLocation = {
           lat: dbLocations[0]?.x_coord,
           lng: dbLocations[0]?.y_coord
