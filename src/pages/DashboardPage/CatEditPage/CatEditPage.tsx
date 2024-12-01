@@ -1,17 +1,9 @@
-import {
-  useRef,
-  useState,
-  useEffect,
-  ChangeEvent,
-  useContext,
-  MouseEvent
-} from 'react';
+import { useRef, useState, useEffect, ChangeEvent, useContext } from 'react';
 import { TextInput } from '@components/Inputs/TextInput/TextInput';
 import { TextAreaInput } from '@components/Inputs/TextAreaInput/TextAreaInput';
 import { Link, useParams } from 'react-router-dom';
 import { UseFormSetupData } from '@hooks/UseFormSetupData';
 import { CatFormFields, CatFormSchema, GenderType } from '@interfaces/CatForm';
-import { MapModal } from '@components/MapModal/MapModal';
 import { CatEditFormContext } from '@contexts/CatFormContext';
 import './CatEditPage.scss';
 import { ZodError, typeToFlattenedError } from 'zod';
@@ -21,12 +13,15 @@ import { environment } from '@consts/environments';
 import { FetchCatDataResult, useFetchCatData } from '@hooks/useFetchCatData';
 import { GeneralInformationSection } from './sections/GeneralInformationSection/GeneralInformationSection';
 import { AboutCatSection } from './sections/AboutCatSection/AboutCatSection';
+import { TitleVariant } from '@components/Title/Title.types';
+import { Title } from '@components/Title/Title';
+import { LocationSection } from './sections/LocationSection/LocationSection';
 
 export const CatEditPage = ({ isEditPage }: { isEditPage?: boolean }) => {
   const { baseUrl } = environment;
   const { catId } = useParams();
   const { toastSuccess, toastError } = UseToast();
-  const [modalOpen, setModalOpen] = useState(false);
+
   const [errors, setErrors] = useState(
     {} as typeToFlattenedError<CatFormFields>
   );
@@ -40,8 +35,8 @@ export const CatEditPage = ({ isEditPage }: { isEditPage?: boolean }) => {
   }: FetchCatDataResult = useFetchCatData(catId, baseUrl);
 
   const nameRef = useRef<HTMLInputElement>(null);
-  const descriptionRef = useRef<HTMLInputElement>(null);
-  const personalityRef = useRef<HTMLInputElement>(null);
+  const descriptionRef = useRef<HTMLTextAreaElement>(null);
+  const personalityRef = useRef<HTMLTextAreaElement>(null);
   const genderRef = useRef<HTMLSelectElement>(null);
   const hasChipRef = useRef<HTMLSelectElement>(null);
   const breedIdRef = useRef<HTMLSelectElement>(null);
@@ -60,15 +55,6 @@ export const CatEditPage = ({ isEditPage }: { isEditPage?: boolean }) => {
     }
   };
 
-  const openMapModal = (event: MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    setModalOpen(true);
-  };
-
-  const closeMapModal = () => {
-    setModalOpen(false);
-  };
-
   useEffect(() => {
     if (catData && isEditPage) {
       setSelectedFormValues(catData);
@@ -76,9 +62,6 @@ export const CatEditPage = ({ isEditPage }: { isEditPage?: boolean }) => {
   }, [catData, setSelectedFormValues, isEditPage]);
 
   const formData = UseFormSetupData();
-  const selectedLocation = formData.locations.find(
-    (location) => location.id === selectedFormValues.locationId
-  );
 
   const handleCatFormSubmit = async (event: ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -153,16 +136,9 @@ export const CatEditPage = ({ isEditPage }: { isEditPage?: boolean }) => {
       <Link to="/dashboard" className="catPage__backLink">
         Volver
       </Link>
-      <h1>Editar Gato</h1>
+      <Title variant={TitleVariant.H1}>Editar Gato</Title>
       <form onSubmit={handleCatFormSubmit} className="catPage__form">
         <section className="catPage__header"></section>
-        <section className="catPage__buttonsSection">
-          <button className="button button-cancel">Cancelar</button>
-          <button className="button button-save" type="submit">
-            {' '}
-            Guardar Cambios{' '}
-          </button>
-        </section>
 
         <GeneralInformationSection
           nameRef={nameRef}
@@ -206,25 +182,24 @@ export const CatEditPage = ({ isEditPage }: { isEditPage?: boolean }) => {
           locationId, clinicId and picture */}
         </section>
 
-        <section className="catPage__locationSection">
-          <h2>Localización:</h2>
-          {selectedLocation?.name ?? 'Localización desconocida'}
-          <TextInput
-            name="clinicId"
-            label="Clínica Asignada"
-            ref={clinicIdRef}
-            placeholder="Clínica Asignada"
-            // defaultValue={formValues?.clinicId ?? ''}
-          />
-          {modalOpen && (
-            <MapModal
-              catId={catId}
-              catLocationId={selectedFormValues.locationId}
-              locations={formData.locations}
-              closeModal={closeMapModal}
-            />
-          )}
-          <button onClick={openMapModal}>Abrir Mapa</button>
+        <LocationSection
+          locations={formData.locations}
+          catId={catId}
+          catLocationId={selectedFormValues.locationId}
+        />
+        <TextInput
+          name="clinicId"
+          label="Clínica Asignada"
+          ref={clinicIdRef}
+          placeholder="Clínica Asignada"
+          // defaultValue={selectedFormValues?.clinicId ?? ''}
+        />
+        <section className="catPage__buttonsSection">
+          <button className="button button-cancel">Cancelar</button>
+          <button className="button button-save" type="submit">
+            {' '}
+            Guardar Cambios{' '}
+          </button>
         </section>
       </form>
     </>

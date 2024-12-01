@@ -1,12 +1,12 @@
-import { TextInput } from '@components/Inputs/TextInput/TextInput';
 import { CatFormFields } from '@interfaces/CatForm';
 import React from 'react';
 import { typeToFlattenedError } from 'zod';
 import './AboutCatSection.scss';
+import { TextAreaInput } from '@components/Inputs/TextAreaInput/TextAreaInput';
 
 interface AboutCatSectionProps {
-  descriptionRef: React.MutableRefObject<HTMLInputElement | null>;
-  personalityRef: React.MutableRefObject<HTMLInputElement | null>;
+  descriptionRef: React.MutableRefObject<HTMLTextAreaElement | null>;
+  personalityRef: React.MutableRefObject<HTMLTextAreaElement | null>;
   selectedFormValues: CatFormFields;
   errors: typeToFlattenedError<CatFormFields>;
 }
@@ -24,7 +24,7 @@ export const AboutCatSection = ({
           ? `Sobre ${selectedFormValues.name}:`
           : 'Sobre el/la gato/a:'}
       </h2>
-      <TextInput
+      <TextAreaInput
         name="description"
         label="Descripción"
         ref={descriptionRef}
@@ -34,9 +34,9 @@ export const AboutCatSection = ({
           errors?.fieldErrors?.description &&
           errors?.fieldErrors?.description[0]
         }
-        isFullWidth
+        numberOfRows={5}
       />
-      <TextInput
+      <TextAreaInput
         name="personality"
         label="Personalidad"
         ref={personalityRef}
@@ -46,7 +46,6 @@ export const AboutCatSection = ({
           errors?.fieldErrors?.personality &&
           errors?.fieldErrors?.personality[0]
         }
-        isFullWidth
       />
     </section>
   );
