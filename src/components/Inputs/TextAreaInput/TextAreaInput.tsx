@@ -6,11 +6,19 @@ interface TextAreaInputProps {
   label: string;
   placeholder: string;
   defaultValue?: string;
-  error?: boolean;
+  error?: string;
+  numberOfRows?: number;
 }
 
 export const TextAreaInput = forwardRef(function TextAreaInput(
-  { name, label, placeholder, error, defaultValue = '' }: TextAreaInputProps,
+  {
+    name,
+    label,
+    placeholder,
+    error,
+    defaultValue = '',
+    numberOfRows = 2
+  }: TextAreaInputProps,
   ref: Ref<HTMLTextAreaElement>
 ) {
   const [value, setValue] = useState(defaultValue);
@@ -33,8 +41,9 @@ export const TextAreaInput = forwardRef(function TextAreaInput(
         placeholder={placeholder}
         value={value}
         onChange={handleChange}
+        style={{ height: `${numberOfRows * 1.5}rem` }}
       />
-      {error && <p>El input está vacío</p>}
+      {error && <p>{error}</p>}
     </div>
   );
 });

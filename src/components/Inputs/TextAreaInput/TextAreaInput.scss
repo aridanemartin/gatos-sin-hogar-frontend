@@ -1,5 +1,13 @@
 @use '@sass' as *;
 
-.textArea {
+.textAreaInput {
   @include formInputStyles;
+
+  width: 100%;
+
+  textarea {
+    font-family: var(--roboto-font);
+    padding: 1rem;
+    resize: none;
+  }
 }

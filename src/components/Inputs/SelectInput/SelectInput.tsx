@@ -26,7 +26,6 @@ export const SelectInput = forwardRef(function SelectInput(
   }: SelectInputProps,
   ref: Ref<HTMLSelectElement>
 ) {
-  if (name === 'leukemia') console.log(defaultValue, 'defaultValue');
   const [value, setValue] = useState(defaultValue);
 
   useEffect(() => {
