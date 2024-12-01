@@ -3,6 +3,8 @@ import { ImageGallery } from '@components/ImageGallery/ImageGallery';
 import { Title } from '@components/Title/Title';
 import './Adopt.scss';
 import { TitleVariant } from '@components/Title/Title.types';
+import { slides } from '@components/TestimonialsSlider/testimonialData';
+import { TestimonialsSlider } from '@components/TestimonialsSlider/TestimonialsSlider';
 
 interface Cat {
   id: number;
@@ -77,9 +79,13 @@ export const AdoptPage = () => {
   return (
     <div className="adoptPage">
       <Title variant={TitleVariant.H1}>Conoce a nuestros gatos</Title>
-      <ImageGallery items={cats} />
-      <button onClick={fetchPrevPage}>Prev Page</button>
-      <button onClick={fetchNextPage}>Next Page</button>
+      <ImageGallery
+        items={cats}
+        pagination={pagination}
+        fetchPrevPage={fetchPrevPage}
+        fetchNextPage={fetchNextPage}
+      />
+      <TestimonialsSlider slides={slides} />
     </div>
   );
 };
