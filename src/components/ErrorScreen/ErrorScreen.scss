@@ -1,0 +1,32 @@
+.errorScreen {
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 1.2;
+  text-align: center;
+
+  &__errorCode {
+    font-size: 2.5rem;
+    font-weight: bold;
+  }
+
+  &__message {
+    padding-bottom: 1rem;
+  }
+
+  .errorScreen__button {
+    padding: 0.5rem 1rem;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    &:hover {
+      background-color: #555;
+    }
+  }
+}

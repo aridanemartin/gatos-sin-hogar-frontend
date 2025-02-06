@@ -16,6 +16,7 @@ import { AboutCatSection } from './sections/AboutCatSection/AboutCatSection';
 import { TitleVariant } from '@components/Title/Title.types';
 import { Title } from '@components/Title/Title';
 import { LocationSection } from './sections/LocationSection/LocationSection';
+import { ErrorScreen } from '@components/ErrorScreen/ErrorScreen';
 
 export const CatEditPage = ({ isEditPage }: { isEditPage?: boolean }) => {
   const { baseUrl } = environment;
@@ -121,10 +122,7 @@ export const CatEditPage = ({ isEditPage }: { isEditPage?: boolean }) => {
   };
 
   if (fetchCatDataError) {
-    toastError(fetchCatDataError, {
-      toastId: 'fetchCatDataError'
-    });
-    return <p>Algo ha sucedido</p>;
+    return <ErrorScreen errorMessage={fetchCatDataError} />;
   }
 
   if (fetchCatDataLoading && isEditPage) {
