@@ -2,7 +2,7 @@
   &__form {
     padding: 40px;
     display: grid;
-    grid-template-areas: 'header header buttons' 'general general location' 'about about about' 'health health incident';
+    grid-template-areas: 'header header buttons' 'general general location' 'about about about' 'health health clinic';
     grid-template-columns: 1fr 1fr auto;
     border: 1px solid var(--soft-gray);
     border-radius: 12px;
@@ -57,5 +57,9 @@
 
   &__healthRecordsSection {
     grid-area: health;
+  }
+
+  &__clinicSection {
+    grid-area: clinic;
   }
 }
