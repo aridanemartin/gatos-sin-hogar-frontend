@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { CatLocation } from '@interfaces/CatForm';
-import { LatLngExpression, LatLngLiteral } from 'leaflet';
+import type { CatLocation } from '@interfaces/CatForm';
+import type { LatLngExpression, LatLngLiteral } from 'leaflet';
 
 const baseUrl = import.meta.env.VITE_BACKEND_BASE_URL;
 

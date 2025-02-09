@@ -1,4 +1,4 @@
-import { forwardRef, useState, ChangeEvent, Ref, useEffect } from 'react';
+import { forwardRef, useState, type ChangeEvent, type Ref, useEffect } from 'react';
 import './TextInput.scss';
 
 interface TextInputProps {

@@ -1,5 +1,5 @@
 import './Title.scss';
-import { TitleVariant } from './Title.types';
+import type { TitleVariant } from './Title.types';
 
 interface TitleProps {
   variant: TitleVariant;

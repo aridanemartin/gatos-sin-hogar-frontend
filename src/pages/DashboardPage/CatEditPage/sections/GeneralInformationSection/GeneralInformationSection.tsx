@@ -1,10 +1,10 @@
 import { DateInput } from '@components/Inputs/DateInput/DateInput';
 import { SelectInput } from '@components/Inputs/SelectInput/SelectInput';
 import { TextInput } from '@components/Inputs/TextInput/TextInput';
-import React from 'react';
+import type React from 'react';
 import './GeneralInformationSection.scss';
-import { CatFormData, CatFormFields } from '@interfaces/CatForm';
-import { typeToFlattenedError } from 'zod';
+import type { CatFormData, CatFormFields } from '@interfaces/CatForm';
+import type { typeToFlattenedError } from 'zod';
 import { ImageInput } from '@components/Inputs/FileInput/ImageInput';
 
 interface GeneralInformationProps {

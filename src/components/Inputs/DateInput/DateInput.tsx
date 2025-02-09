@@ -1,4 +1,4 @@
-import { forwardRef, useState, Ref, ChangeEvent, useEffect } from 'react';
+import { forwardRef, useState, type Ref, type ChangeEvent, useEffect } from 'react';
 import './DateInput.scss';
 
 interface DateInputProps {

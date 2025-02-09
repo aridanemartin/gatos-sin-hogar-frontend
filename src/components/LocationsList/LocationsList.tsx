@@ -1,6 +1,6 @@
-import { LatLngExpression, Map as LeafletMapType } from 'leaflet';
+import type { LatLngExpression, Map as LeafletMapType } from 'leaflet';
 import './LocationList.scss';
-import { RefObject, useContext } from 'react';
+import { type RefObject, useContext } from 'react';
 import { CatEditFormContext } from '@contexts/CatFormContext';
 
 export interface Location {

@@ -1,5 +1,6 @@
-import React, { createContext, useState, useEffect } from 'react';
-import { AuthContextType } from './AuthContext.types';
+import type React from 'react';
+import { createContext, useState, useEffect } from 'react';
+import type { AuthContextType } from './AuthContext.types';
 
 export const AuthContext = createContext<AuthContextType>({
   userData: null,

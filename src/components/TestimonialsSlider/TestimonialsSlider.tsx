@@ -1,7 +1,7 @@
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
 import { Link } from 'react-router-dom';
-import { TestimonialsContent } from './testimonialData';
+import type { TestimonialsContent } from './testimonialData';
 
 import './TestimonialsSlider.css';
 import 'swiper/css';

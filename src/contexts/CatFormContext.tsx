@@ -1,5 +1,6 @@
-import { CatFormFields } from '@interfaces/CatForm';
-import React, { createContext, useState, ReactNode } from 'react';
+import type { CatFormFields } from '@interfaces/CatForm';
+import type React from 'react';
+import { createContext, useState, type ReactNode } from 'react'
 
 const InitialFormValues: CatFormFields = {
   name: '',

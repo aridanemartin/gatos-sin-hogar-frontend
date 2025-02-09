@@ -1,4 +1,4 @@
-import { Slide, ToastOptions, toast } from 'react-toastify';
+import { Slide, type ToastOptions, toast } from 'react-toastify';
 
 const UseToast = () => {
   const options: ToastOptions<unknown> = {

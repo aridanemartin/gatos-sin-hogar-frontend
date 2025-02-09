@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { CatApiFormSchema, CatFormFields } from '@interfaces/CatForm';
+import { CatApiFormSchema, type CatFormFields } from '@interfaces/CatForm';
 import { ZodError } from 'zod';
 
 export interface FetchCatDataResult {
@@ -19,7 +19,9 @@ export const useFetchCatData = (
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch(`${baseUrl}/cats/${catId}`);
+        const res = await fetch(`${baseUrl}/cats/${catId}`, {
+          credentials: 'include'
+        });
 
         if (!res.ok) {
           setError('Error al cargar los datos del gato.');

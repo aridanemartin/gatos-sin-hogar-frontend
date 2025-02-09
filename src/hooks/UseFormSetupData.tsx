@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import { CatFormData } from '@interfaces/CatForm';
+import type { CatFormData } from '@interfaces/CatForm';
 import { EventsContext } from '@contexts/EventsContext';
 
 const baseUrl = import.meta.env.VITE_BACKEND_BASE_URL;
