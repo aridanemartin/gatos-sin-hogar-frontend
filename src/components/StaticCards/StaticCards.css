@@ -1,0 +1,39 @@
+.staticCards {
+	display: flex;
+	gap: 1rem;
+}
+
+.staticCard {
+	padding: var(--card-padding);
+	border-radius: var(--card-border-radius);
+	background-color: var(--card-background-gray);
+
+	.content {
+		text-align: center;
+
+		.title {
+			font-weight: bold;
+			padding-bottom: var(--padding-s);
+		}
+
+		.icon {
+			svg {
+				width: 50px;
+				height: 50px;
+			}
+			padding-bottom: var(--padding-m);
+		}
+	}
+}
+
+@media (width < 1200px) {
+	.staticCards {
+		padding: 0 var(--padding-m);
+	}
+}
+
+@media (width < 768px) {
+	.staticCards {
+		flex-direction: column;
+	}
+}

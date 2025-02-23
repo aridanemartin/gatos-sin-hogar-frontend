@@ -1,37 +1,72 @@
-@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&family=Roboto:wght@400;500;700;900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&display=swap");
 
 :root {
-  --roboto-font: 'Roboto', sans-serif;
+	--font-dm-sans: "DM Sans", sans-serif;
+	--font-red-hat-display: "Red Hat Display", sans-serif;
 
-  /* Colors */
-  --gray: #7b7a92;
-  --dark-gray: #444360;
-  --soft-gray: #d9d9d9;
-  --main-blue: #29293b;
+	/* Colors */
+	--gray: #7b7a92;
+	--dark-gray: #444360;
+	--soft-gray: #d9d9d9;
+	--main-blue: #29293b;
+	--card-background-gray: #eaeaea;
+	--button-primary-color: #ffffff;
 
-  /* Spacing */
-  --between-input-sections: 50px;
-  --section-spacing-m: 1rem;
-  --desktop-default-title-padding: 1rem;
-  --desktop-default-padding: 3rem;
+	/* Spacing */
+	--between-input-sections: 50px;
+	--section-spacing-m: 1rem;
+	--desktop-default-title-padding: 1rem;
+	--desktop-default-padding: 3rem;
 
-  /* Font sizes */
-  --font-size-xxl: 2.5rem;
-  --font-size-xl: 2rem;
-  --font-size-l: 1.5rem;
-  --font-size-m: 1.25rem;
-  --font-size-s: 1rem;
-  --font-size-xs: 0.75rem;
+	/* Font sizes */
+	--font-size-xxl: 2.5rem;
+	--font-size-xl: 2rem;
+	--font-size-l: 1.5rem;
+	--font-size-m: 1.25rem;
+	--font-size-s: 1rem;
+	--font-size-xs: 0.75rem;
+
+	/* Card styles */
+	--card-border-radius: 1.5rem;
+	--card-padding: 1.5rem;
+
+	/* Padding */
+	--padding-xs: 0.5rem;
+	--padding-s: 0.75rem;
+	--padding-m: 1rem;
+	--padding-l: 2rem;
+	--padding-xl: 3rem;
+
+	--padding-section-spacing-desktop: 3rem;
+	--padding-section-spacing-mobile: 1.5rem;
+
+	/* Border radius */
+	--border-radius-s: 0.5rem;
+	--border-radius-m: 1rem;
+	--border-radius-l: 1.5rem;
+	--border-radius-xl: 2rem;
 }
 
 body {
-  font-family: var(--roboto-font);
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+p,
+a,
+span,
+button {
+	font-family: var(--font-red-hat-display);
+}
+
+h1,
+h2,
+h3 {
+	font-family: var(--font-dm-sans);
 }
 
 .swiper-button-next,
 .swiper-button-prev {
-  color: var(--dark-gray);
+	color: var(--dark-gray);
 }

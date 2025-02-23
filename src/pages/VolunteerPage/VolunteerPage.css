@@ -1,0 +1,17 @@
+.volunteerPage {
+	.joinUsBanner {
+		text-align: center;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 1rem;
+		padding-bottom: var(--padding-section-spacing-desktop);
+
+		p {
+			font-size: var(--font-size-m);
+			color: var(--dark-gray);
+			width: 30ch;
+			line-height: 2rem;
+		}
+	}
+}

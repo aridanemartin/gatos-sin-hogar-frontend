@@ -13,6 +13,7 @@ import { CatEditFormContextProvider } from "@contexts/CatFormContext";
 import MainLayout from "./layouts/MainLayout";
 import { AuthContext } from "@contexts/auth/AuthContext";
 import { ErrorScreen } from "./components/ErrorScreen/ErrorScreen";
+import { VolunteerPage } from "./pages/VolunteerPage/VolunteerPage";
 
 const ProtectedRoute = () => {
 	const { userData, loading } = useContext(AuthContext);
@@ -57,12 +58,15 @@ function App() {
 								</CatEditFormContextProvider>
 							}
 						/>
-
-						<Route path="voluntarios" element={<VolunteerEditPage />} />
+						<Route
+							path="voluntariado/:volunteerId/edit"
+							element={<VolunteerEditPage />}
+						/>
 						<Route path="vacunas" element={<VaccineEditPage />} />
 						<Route path="tareas" element={<TaskEditPage />} />
 					</Route>
 				</Route>
+				<Route path="voluntariado" element={<VolunteerPage />} />
 
 				<Route path="adopta" element={<AdoptPage />} />
 				<Route
