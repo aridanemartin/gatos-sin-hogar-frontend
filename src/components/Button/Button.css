@@ -6,8 +6,8 @@
 	background-color: transparent;
 }
 
-.primary {
-	background-color: black;
+.override {
+	background-color: green;
 	color: white;
 	border-radius: var(--border-radius-xl);
 

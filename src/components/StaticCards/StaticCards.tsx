@@ -2,8 +2,6 @@ import "./StaticCards.css";
 import { FeederIcon } from "@assets/icons/svg/FeederIcon";
 import { CrossIcon } from "@assets/icons/svg/CrossIcon";
 import { ShopIcon } from "@assets/icons/svg/ShopIcon";
-import { Title } from "@components/Title/Title";
-import { TitleVariant } from "@components/Title/Title.types";
 
 const cardsInfo = [
 	{
@@ -29,7 +27,6 @@ const cardsInfo = [
 export const StaticCards = () => {
 	return (
 		<section>
-			<Title variant={TitleVariant.H2}>ACTIVIDADES</Title>
 			<div className="staticCards">
 				{cardsInfo.map((card) => (
 					<div className="staticCard" key={card.title}>

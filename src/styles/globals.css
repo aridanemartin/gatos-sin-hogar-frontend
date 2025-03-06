@@ -66,7 +66,19 @@ h3 {
 	font-family: var(--font-dm-sans);
 }
 
+h1,
+h2 {
+	font-weight: 700;
+}
+
 .swiper-button-next,
 .swiper-button-prev {
 	color: var(--dark-gray);
+}
+
+body,
+:root {
+	--garoe-ui-button-primary-bg: #000000;
+	--garoe-ui-button-padding: 0.5rem 2rem;
+	--garoe-ui-default-margin-bottom: 6rem;
 }

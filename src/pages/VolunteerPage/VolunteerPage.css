@@ -1,4 +1,9 @@
 .volunteerPage {
+	.volunteerTitle {
+		padding-top: 3rem;
+		padding-bottom: 1rem;
+	}
+
 	.joinUsBanner {
 		text-align: center;
 		display: flex;
@@ -12,6 +17,44 @@
 			color: var(--dark-gray);
 			width: 30ch;
 			line-height: 2rem;
+		}
+	}
+}
+
+.sideImageText {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	.textContainer {
+		display: flex;
+		flex-direction: column;
+		padding: 1rem;
+		gap: 1rem;
+	}
+
+	.title {
+		font-size: var(--font-size-xxl);
+		line-height: 3rem;
+	}
+
+	.description {
+		font-size: var(--font-size-m);
+		line-height: 2rem;
+	}
+}
+
+@media (width < 768px) {
+	.sideImageText {
+		flex-direction: column-reverse;
+
+		.title {
+			font-size: var(--font-size-xl);
+			line-height: 2.5rem;
+		}
+
+		.description {
+			font-size: var(--font-size-s);
 		}
 	}
 }
