@@ -1,11 +1,11 @@
 .staticCards {
 	display: flex;
 	gap: 1rem;
+	padding-bottom: var(--padding-section-spacing-desktop);
 }
 
 .staticCard {
 	padding: var(--card-padding);
-	margin-bottom: 3rem;
 	border-radius: var(--card-border-radius);
 	background-color: var(--card-background-gray);
 
@@ -30,11 +30,16 @@
 @media (width < 1200px) {
 	.staticCards {
 		padding: 0 var(--padding-m);
+		padding-bottom: var(--padding-section-spacing-desktop);
 	}
 }
 
 @media (width < 768px) {
 	.staticCards {
 		flex-direction: column;
+
+		.staticCard {
+			margin-bottom: 0rem;
+		}
 	}
 }

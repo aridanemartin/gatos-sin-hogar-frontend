@@ -14,7 +14,7 @@ export const VolunteerPage = () => {
 				VOLUNTARIOS
 			</Title>
 			<SideImageText
-				className="sideImageText"
+				className="volunteerPageSideImageText"
 				imageSrc={volunteersImageSrc}
 				imageAlt="Volunteer"
 				imagePosition="right"

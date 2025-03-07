@@ -1,24 +1,46 @@
 @use '@sass/fonts.scss' as *;
 @use '@sass/colors.scss' as *;
 
-p {
-  font-size: $font-size-title-desktop;
-}
 
 .homePage{
 .title{
   font-weight: 300;
+
   strong{
     font-weight: 700;
   }
 }
 
-  .sideImageText{
+  .homePageSideImageText{
+    
     padding-top: 2rem;
-    height: 25rem;
+    height: 20rem;
+
+    @media (width < 768px){
+      height: 35rem;
+    }
 
     img{
     border-radius: 1.5rem;
+    }
+
+    .textContainer {
+		display: flex;
+		flex-direction: column;
+    justify-content: center;
+		padding: 1rem;
+		gap: 1rem;
+	  }
+
+
+    .title {
+		font-size: var(--font-size-xxl);
+		line-height: 3rem;
+	  }
+
+    .description {
+      font-size: var(--font-size-m);
+      line-height: 2rem;
     }
   }
 

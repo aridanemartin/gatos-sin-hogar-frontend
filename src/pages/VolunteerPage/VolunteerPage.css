@@ -21,21 +21,22 @@
 	}
 }
 
-.sideImageText {
+.volunteerPageSideImageText {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	padding: 1rem;
 
 	.textContainer {
 		display: flex;
 		flex-direction: column;
-		padding: 1rem;
-		gap: 1rem;
+		padding-right: 1rem;
 	}
 
 	.title {
 		font-size: var(--font-size-xxl);
 		line-height: 3rem;
+		padding-bottom: 1rem;
 	}
 
 	.description {
