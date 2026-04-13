@@ -7,14 +7,17 @@ export enum ButtonType {
 }
 
 interface ButtonProps {
-	buttonType: ButtonType;
 	text: string;
 	onClick: () => void;
+	buttonType?: ButtonType;
+	variant?: "primary" | "secondary" | "tertiary";
+	className?: string;
 }
 
-export const Button = ({ buttonType, text, onClick }: ButtonProps) => {
+export const Button = ({ text, onClick, buttonType, variant, className }: ButtonProps) => {
+	const variantClass = variant ?? buttonType ?? ButtonType.PRIMARY;
 	return (
-		<button type="button" className={`button ${buttonType}`} onClick={onClick}>
+		<button type="button" className={`button ${variantClass}${className ? ` ${className}` : ""}`} onClick={onClick}>
 			{text}
 		</button>
 	);

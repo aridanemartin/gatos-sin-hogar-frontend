@@ -4,15 +4,7 @@ import react from "@vitejs/plugin-react";
 
 export default defineConfig({
 	plugins: [react()],
-	server: {
-		fs: {
-			allow: [
-				// Allow your project path where garoe-ui is located
-				"f:/workspace/garoe-ui",
-				"f:/workspace/gatos-sin-hogar-frontend", // Optional: your app's path if not already allowed
-			],
-		},
-	},
+	server: {},
 	resolve: {
 		alias: [
 			{

@@ -1,7 +1,9 @@
 import { TestimonialsSlider } from "@components/TestimonialsSlider/TestimonialsSlider";
 import "./HomePage.scss";
 import { slides } from "@components/TestimonialsSlider/testimonialData";
-import { Button, SideImageText, TwoColumnsLayout } from "garoe-ui";
+import { Button } from "@components/Button/Button";
+import { SideImageText } from "@components/SideImageText/SideImageText";
+import { TwoColumnsLayout } from "@components/TwoColumnsLayout/TwoColumnsLayout";
 import portadaImgSrc from "@assets/pictures/mirandaPortada.webp";
 
 export const HomePage = () => {

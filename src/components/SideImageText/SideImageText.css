@@ -1,0 +1,30 @@
+.sideImageText {
+	display: flex;
+	align-items: center;
+	gap: 2rem;
+	width: 100%;
+}
+
+.sideImageText--image-right {
+	flex-direction: row-reverse;
+}
+
+.sideImageText--image-left {
+	flex-direction: row;
+}
+
+.sideImageText__image {
+	width: 50%;
+	height: 100%;
+	object-fit: cover;
+}
+
+@media (width < 768px) {
+	.sideImageText {
+		flex-direction: column-reverse;
+	}
+
+	.sideImageText__image {
+		width: 100%;
+	}
+}

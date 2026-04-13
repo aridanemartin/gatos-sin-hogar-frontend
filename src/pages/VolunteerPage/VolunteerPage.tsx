@@ -2,7 +2,8 @@ import { TestimonialsSlider } from "@components/TestimonialsSlider/TestimonialsS
 import "./VolunteerPage.css";
 import { slides } from "@components/TestimonialsSlider/testimonialData";
 import { StaticCards } from "@components/StaticCards/StaticCards";
-import { Button, SideImageText } from "garoe-ui";
+import { Button } from "@components/Button/Button";
+import { SideImageText } from "@components/SideImageText/SideImageText";
 import volunteersImageSrc from "@assets/pictures/volunteers.webp";
 import { Title } from "@components/Title/Title";
 import { TitleVariant } from "@components/Title/Title.types";
